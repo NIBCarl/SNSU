@@ -11,13 +11,13 @@
         </div>
         <div class="dashboard-list">
           <div class="not-flex">
-            <Link href="/dashboard" class="dashboard"><i class="fa fa-home"></i>Dashboard</Link>
-            <Link href="/student-list" class="lists"><i class="fa fa-bar-chart"></i>Student Lists</Link>
-            <Link href="/add-new" class="add-new"><i class="fa fa-plus"></i>Add new</Link>
+            <Link href="/dashboard" class="dashboard"><i class="fas fa-home"></i>Dashboard</Link>
+            <Link href="/student-list" class="lists"><i class="fas fa-bar-chart"></i>Student Lists</Link>
+            <Link href="/add-new" class="add-new"><i class="fas fa-plus"></i>Add new</Link>
           </div>
         </div>
         <div class="cta-button-dashboard">
-          <i class="fa fa-plus not-circle"></i>
+          <i class="fas fa-plus not-circle"></i>
           <h1 class="cta-button-dashboard-head">Add new</h1>
           <p class="cta-text">Add new student info</p>
           <Link href="/add-new" class="button-1">Click here</Link>
@@ -47,7 +47,7 @@
         <h1 class="main-title"><span class="gray">Pages</span> / Student List</h1>
         <div class="admin-setting flex">
           <div class="search-bar">
-            <i class="fa fa-search"></i>
+            <i class="fas fa-search"></i>
             <input v-model="search" class="main-input" type="text" placeholder="Search students..." @input="handleSearch" />
           </div>
         </div>
@@ -410,7 +410,7 @@ watch(search, handleSearch);
   padding: 8.5px 13px;
   margin-right: 56px;
 }
-.fa-search {
+.fas.fa-search {
   color: #2D3748;
   padding-right: 12.68px;
 }   
@@ -433,7 +433,7 @@ watch(search, handleSearch);
 ul {
   list-style-type: none;
 }
-.fa-bar-chart {
+.fas.fa-bar-chart {
   font-size: 15px;
   color: #ffffff;
   background-color: #235F23;
@@ -441,7 +441,7 @@ ul {
   padding: 7.5px;
   margin-right: 11.5px;
 }
-.fa-home, .fa-plus {
+.fas.fa-home, .fas.fa-plus {
   font-size: 15px;
   color: #235F23;
   background-color: #ffffff;
@@ -642,7 +642,7 @@ h1 {
   font-weight: 400;
   color: #ffffff;
 }
-.cta-button-dashboard .fa-plus {
+.cta-button-dashboard .fas.fa-plus {
   border-radius: 12px;
   font-size: 24px;
   margin-bottom: 21px;
@@ -868,5 +868,26 @@ h1 {
 .content-shifted {
   /* margin-left: 280px; */ /* Width of the sidebar - flexbox should handle this */
   /* width: calc(100% - 280px); */
+}
+
+/* General Font Awesome Styles - Crucial for rendering */
+i.fas, i.far, i.fab {
+  font-family: "Font Awesome 6 Free" !important; 
+  font-style: normal !important; 
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+i.fas { /* Solid icons */
+  font-weight: 900 !important; 
+}
+
+i.far { /* Regular icons */
+  font-weight: 400 !important; 
+}
+
+i.fab {
+    font-weight: 400 !important; 
 }
 </style>

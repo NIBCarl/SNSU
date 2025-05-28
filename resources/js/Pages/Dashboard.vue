@@ -517,7 +517,7 @@ onMounted(() => {
   padding: 8.5px 13px;
   margin-right: 56px;
 }
-.fas {
+.fas.fa-search {
   color: #2D3748;
   padding-right: 12.68px;
 }   
@@ -540,22 +540,24 @@ onMounted(() => {
 ul {
   list-style-type: none;
 }
-.fas {
+.dashboard-list .fas {
   font-size: 15px;
+  border-radius: 12px;
+  padding: 7.5px;
+  margin-right: 11.5px;
+}
+
+.dashboard .fas.fa-home {
   color: #ffffff;
   background-color: #235F23;
-  border-radius: 12px;
-  padding: 7.5px;
-  margin-right: 11.5px;
 }
-.fas {
-  font-size: 15px;
+
+.lists .fas.fa-chart-bar, 
+.add-new .fas.fa-plus {
   color: #235F23;
   background-color: #ffffff;
-  border-radius: 12px;
-  padding: 7.5px;
-  margin-right: 11.5px;
 }
+
 .dashboard{
   font-size: 12px;
   font-weight: 700;
@@ -743,7 +745,7 @@ h1 {
   font-weight: 400;
   color: #ffffff;
 }
-.cta-button-dashboard .fas {
+.cta-button-dashboard .fas.fa-plus {
   border-radius: 12px;
   font-size: 24px;
   margin-bottom: 21px;
