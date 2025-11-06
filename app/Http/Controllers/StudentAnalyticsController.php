@@ -36,7 +36,7 @@ class StudentAnalyticsController extends Controller
             'avgTravelTime' => round(Student::avg('travel_time_minutes')),
             'locationStats' => $this->getLocationStats(),
             'indigenousCount' => Student::where('ethnicity', 'Indigenous')->count(),
-            'pwdCount' => Student::where('pwd_status', true)->count(),
+            'pwdCount' => Student::where('pwd', true)->count(),
             'rentingCount' => Student::where('housing_status', 'Renting')->count(),
         ]);
     }
@@ -88,7 +88,7 @@ class StudentAnalyticsController extends Controller
                 ->get(),
             'socioDemo' => [
                 'indigenous' => Student::where('ethnicity', 'Indigenous')->count(),
-                'pwd' => Student::where('pwd_status', true)->count(),
+                'pwd' => Student::where('pwd', true)->count(),
                 'renting' => Student::where('housing_status', 'Renting')->count(),
             ]
         ];

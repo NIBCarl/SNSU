@@ -1,66 +1,370 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SNSU Student Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive web-based student information management system built for Surigao del Norte State University (SNSU) Student Affairs Office.
 
-## About Laravel
+![SNSU Logo](public/assets/logo.png)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎓 About
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The SNSU Student Management System is designed to streamline student data collection, management, and analysis for the Student Affairs Office. The system provides a public-facing student submission form and a secure administrative dashboard for managing student records.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Features
 
-## Learning Laravel
+### Public Features
+- **Student Registration Form**: Public form for students to submit their information
+- **Thank You Page**: Confirmation page after successful submission
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Administrative Features
+- **Dashboard**: Real-time statistics and insights
+  - Total students count
+  - Indigenous students tracking
+  - PWD (Persons with Disability) monitoring
+  - Housing status analytics
+  - Location-based statistics
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Student Management**
+  - View all students with pagination
+  - Add new student records
+  - Edit existing student information
+  - Delete student records (soft delete with recovery option)
+  
+- **Advanced Filtering**
+  - Filter by Course
+  - Filter by Year Level (1st Year, 2nd Year, 3rd Year, 4th Year, Others)
+  - Filter by Gender
+  - Filter by City
+  - Filter by Ethnicity
+  - Filter by Housing Status
+  - PWD-only filter
+  - Global search across multiple fields
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Export Capabilities**
+  - Export to CSV
+  - Export to Excel (.xls)
+  - Export to PDF (print-friendly)
+  - Exports respect current filters and page
 
-## Laravel Sponsors
+- **Student Analytics**
+  - Gender distribution charts
+  - Transportation mode statistics
+  - Family income analysis
+  - Location-based demographics
+  - Travel time averages
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Authentication & Security**
+  - Secure login system
+  - Password reset functionality
+  - Email verification
+  - Profile management
+  - CSRF protection
 
-### Premium Partners
+## 🛠️ Technology Stack
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Backend
+- **Framework**: Laravel 11.9
+- **Language**: PHP 8.2+
+- **Database**: MySQL/MariaDB
+- **Authentication**: Laravel Breeze with Sanctum
 
-## Contributing
+### Frontend
+- **Framework**: Vue.js 3.4
+- **SPA Library**: Inertia.js 1.0
+- **Build Tool**: Vite 5.0
+- **Styling**: Tailwind CSS 3.2
+- **Icons**: Font Awesome 6.7
+- **Charts**: Chart.js 4.4
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Additional Libraries
+- **PhpSpreadsheet**: Excel export functionality
+- **Ziggy**: Laravel route helper for JavaScript
 
-## Code of Conduct
+## 📋 Requirements
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP >= 8.2
+- Composer
+- Node.js >= 18.x
+- NPM or Yarn
+- MySQL >= 5.7 or MariaDB >= 10.3
+- Web server (Apache/Nginx)
 
-## Security Vulnerabilities
+## 🚀 Installation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd SNSU
+```
 
-## License
+### 2. Install PHP Dependencies
+```bash
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 3. Install JavaScript Dependencies
+```bash
+npm install
+```
+
+### 4. Environment Configuration
+```bash
+# Copy the environment file
+cp env.txt .env
+
+# Generate application key
+php artisan key:generate
+```
+
+### 5. Configure Database
+Edit the `.env` file and update database credentials:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=snsu_student_affairs
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
+```
+
+### 6. Run Migrations
+```bash
+php artisan migrate
+```
+
+### 7. Seed Admin User
+```bash
+php artisan db:seed --class=AdminSeeder
+```
+
+**Default Admin Credentials:**
+- Email: `studentaffairs@snsu.edu.ph`
+- Password: `SNSU2024@SecurePass`
+
+⚠️ **IMPORTANT**: Change these credentials immediately after first login!
+
+### 8. Build Frontend Assets
+```bash
+# For development
+npm run dev
+
+# For production
+npm run build
+```
+
+### 9. Start Development Server
+```bash
+php artisan serve
+```
+
+Visit: `http://localhost:8000`
+
+## 🌐 Production Deployment
+
+### Pre-Deployment Checklist
+
+1. **Update Environment Variables**
+   - Set `APP_ENV=production`
+   - Set `APP_DEBUG=false`
+   - Update `APP_URL` to your production domain
+   - Configure mail server settings
+   - Set strong database credentials
+
+2. **Install Production Dependencies**
+```bash
+composer install --optimize-autoloader --no-dev
+npm ci
+```
+
+3. **Build Assets**
+```bash
+npm run build
+```
+
+4. **Run Migrations**
+```bash
+php artisan migrate --force
+```
+
+5. **Seed Database**
+```bash
+php artisan db:seed --class=AdminSeeder
+```
+
+6. **Optimize Application**
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan optimize
+```
+
+7. **Set Permissions**
+```bash
+chmod -R 755 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
+
+8. **Configure Web Server**
+   - Point document root to `/public`
+   - Enable URL rewriting
+   - Configure HTTPS/SSL
+
+### Security Recommendations
+
+- Enable HTTPS
+- Set `SESSION_SECURE_COOKIE=true` in `.env` for HTTPS
+- Change default admin credentials immediately
+- Configure firewall rules
+- Regular backups of database
+- Keep dependencies updated
+- Enable rate limiting on login routes
+- Use strong database passwords
+- Consider implementing 2FA for admin accounts
+
+## 📁 Project Structure
+
+```
+SNSU/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/      # Application controllers
+│   │   └── Middleware/       # Custom middleware
+│   └── Models/               # Eloquent models
+├── database/
+│   ├── migrations/           # Database migrations
+│   └── seeders/              # Database seeders
+├── public/
+│   ├── assets/              # Images and static assets
+│   └── build/               # Compiled frontend assets
+├── resources/
+│   ├── js/
+│   │   ├── Components/      # Vue components
+│   │   ├── Layouts/         # Layout components
+│   │   └── Pages/           # Page components
+│   ├── css/                 # Stylesheets
+│   └── views/               # Blade templates
+├── routes/
+│   ├── web.php             # Web routes
+│   └── auth.php            # Authentication routes
+└── storage/                 # Application storage
+```
+
+## 🔧 Configuration
+
+### Student Year Levels
+The system uses predefined year levels:
+- 1st Year
+- 2nd Year
+- 3rd Year
+- 4th Year
+- Others
+
+### Filter Options
+Pre-configured filter options:
+- **Gender**: Male, Female, Other
+- **Ethnicity**: Indigenous, Non-Indigenous
+- **Housing Status**: Owned, Renting, Living with Relatives, Other
+- **Study Devices**: Laptop, Tablet, Desktop, Mobile Phone
+
+### Export Formats
+- **CSV**: Compatible with Excel and spreadsheet applications
+- **Excel**: Direct .xls format export
+- **PDF**: Print-friendly HTML format for saving as PDF
+
+## 👥 User Roles
+
+### Admin Users
+- Full access to dashboard
+- Manage student records
+- View analytics
+- Export data
+- Manage user profile
+
+### Public Users
+- Submit student information via public form
+- No login required for student submission
+
+## 🐛 Troubleshooting
+
+### Assets Not Loading
+```bash
+npm run build
+php artisan view:clear
+```
+
+### Database Connection Error
+- Verify database credentials in `.env`
+- Ensure MySQL service is running
+- Check database exists: `CREATE DATABASE snsu_student_affairs;`
+
+### Permission Errors
+```bash
+chmod -R 755 storage bootstrap/cache
+```
+
+### Session/Cache Issues
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+```
+
+## 📊 Database Schema
+
+### Students Table (45 fields)
+- Basic Information: name, student ID, course, year level
+- Personal Details: gender, birth date, marital status, religion
+- Contact: cellphone number
+- Address: complete address with barangay, city, province
+- Academic: study device preference
+- Family: solo parent status, household size, parents' education
+- Financial: family income bracket, monthly rental, daily fare
+- Transportation: mode, travel time
+- Demographics: ethnicity, PWD status, housing status
+
+### Users Table
+- Admin user accounts
+- Email verification
+- Password reset tokens
+
+## 🔄 Updates & Maintenance
+
+### Update Dependencies
+```bash
+composer update
+npm update
+```
+
+### Database Backup
+```bash
+mysqldump -u username -p snsu_student_affairs > backup.sql
+```
+
+### Clear All Caches
+```bash
+php artisan optimize:clear
+```
+
+## 📝 License
+
+This project is proprietary software developed for Surigao del Norte State University.
+
+## 👨‍💻 Development Team
+
+Developed for SNSU Student Affairs Office
+
+## 🆘 Support
+
+For technical support and inquiries:
+- Email: studentaffairs@snsu.edu.ph
+- Office: SNSU Student Affairs Office
+
+## 📌 Version
+
+**Current Version**: 1.0.0
+
+**Last Updated**: January 2025
+
+---
+
+**Surigao del Norte State University**  
+*Integrity • Competence • Respect*

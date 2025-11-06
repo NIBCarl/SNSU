@@ -1,0 +1,83 @@
+config:
+  target: "http://localhost:8000"
+  phases:
+    # Warm-up phase: 5 users for 30 seconds
+    - duration: 30
+      arrivalRate: 5
+      name: "Warm-up"
+    
+    # Light load: 10 users per second for 1 minute
+    - duration: 60
+      arrivalRate: 10
+      name: "Light load"
+    
+    # Medium load: 30 users per second for 2 minutes
+    - duration: 120
+      arrivalRate: 30
+      name: "Medium load"
+    
+    # Heavy load: 50 users per second for 1 minute
+    - duration: 60
+      arrivalRate: 50
+      name: "Heavy load"
+    
+    # Ramp down: 10 users per second for 30 seconds
+    - duration: 30
+      arrivalRate: 10
+      name: "Ramp down"
+  
+  processor: "./load-test-processor.js"
+  
+scenarios:
+  - name: "Submit Student Form"
+    flow:
+      # Step 1: Load the form page to get CSRF token
+      - get:
+          url: "/"
+          capture:
+            - selector: "meta[name='csrf-token']"
+              attr: "content"
+              as: "csrfToken"
+      
+      # Step 2: Submit the form
+      - post:
+          url: "/student"
+          headers:
+            X-CSRF-TOKEN: "{{ csrfToken }}"
+            Content-Type: "application/json"
+            Accept: "application/json"
+          json:
+            first_name: "LoadTest{{ $randomString() }}"
+            middle_name: "Test"
+            last_name: "Student{{ $randomNumber(1000,9999) }}"
+            student_id: "TEST{{ $randomNumber(100000,999999) }}"
+            course: "{{ $randomString() }}"
+            year_level: "{{ $randomChoice(['1st Year','2nd Year','3rd Year','4th Year','Others']) }}"
+            gender: "{{ $randomChoice(['Male','Female','Other']) }}"
+            birth_date: "2000-01-15"
+            marital_status: "{{ $randomChoice(['Single','Married']) }}"
+            religion: "{{ $randomString() }}"
+            cellphone_number: "09{{ $randomNumber(100000000,999999999) }}"
+            address: "{{ $randomNumber(1,100) }} Test Street"
+            barangay: "Test Barangay"
+            city: "Test City"
+            province: "Test Province"
+            postal_code: "{{ $randomNumber(1000,9999) }}"
+            study_device: "{{ $randomChoice(['Laptop','Tablet','Desktop','Mobile Phone']) }}"
+            is_solo_parent: false
+            solo_parent_id: ""
+            has_part_time_job: false
+            daily_fare: "{{ $randomNumber(50,200) }}"
+            monthly_rental: "{{ $randomNumber(1000,5000) }}"
+            family_income_bracket: "{{ $randomChoice(['Below ₱10,000','₱10,000 - ₱30,000','₱30,000 - ₱50,000','Above ₱50,000']) }}"
+            household_size: "{{ $randomNumber(3,8) }}"
+            parents_education: "{{ $randomChoice(['Elementary','High School','College','Post Graduate']) }}"
+            transportation_mode: "{{ $randomChoice(['Walking','Public Transport','Private Vehicle','School Bus']) }}"
+            travel_time_minutes: "{{ $randomNumber(15,120) }}"
+            ethnicity: "{{ $randomChoice(['Indigenous','Non-Indigenous']) }}"
+            pwd: false
+            housing_status: "{{ $randomChoice(['Owned','Renting','Living with Relatives','Other']) }}"
+            family_income: "{{ $randomNumber(10000,100000) }}"
+          expect:
+            - statusCode: 302  # Redirect to thank you page
+

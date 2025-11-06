@@ -11,6 +11,14 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
+        $course = $request->input('course', '');
+        $yearLevel = $request->input('year_level', '');
+        $gender = $request->input('gender', '');
+        $city = $request->input('city', '');
+        $ethnicity = $request->input('ethnicity', '');
+        $housingStatus = $request->input('housing_status', '');
+        $pwdOnly = $request->input('pwd_only', false);
+        
         $perPage = 10;
         $newStudentId = $request->session()->get('new_student_id');
 
@@ -30,12 +38,53 @@ class StudentController extends Controller
                         ->orWhere('province', 'like', "%{$search}%");
                 });
             })
+            ->when($course, function ($query, $course) {
+                $query->where('course', $course);
+            })
+            ->when($yearLevel, function ($query, $yearLevel) {
+                $query->where('year_level', $yearLevel);
+            })
+            ->when($gender, function ($query, $gender) {
+                $query->where('gender', $gender);
+            })
+            ->when($city, function ($query, $city) {
+                $query->where('city', $city);
+            })
+            ->when($ethnicity, function ($query, $ethnicity) {
+                $query->where('ethnicity', $ethnicity);
+            })
+            ->when($housingStatus, function ($query, $housingStatus) {
+                $query->where('housing_status', $housingStatus);
+            })
+            ->when($pwdOnly, function ($query) {
+                $query->where('pwd', true);
+            })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
+        // Get unique filter options from database
+        $filterOptions = [
+            'courses' => Student::distinct()->orderBy('course')->pluck('course')->filter()->values(),
+            'yearLevels' => ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Others'],
+            'genders' => ['Male', 'Female', 'Other'],
+            'cities' => Student::distinct()->orderBy('city')->pluck('city')->filter()->values(),
+            'ethnicities' => ['Indigenous', 'Non-Indigenous'],
+            'housingStatuses' => ['Owned', 'Renting', 'Living with Relatives', 'Other'],
+        ];
+
         return Inertia::render('StudentList', [
             'students' => $students,
-            'filters' => ['search' => $search],
+            'filters' => [
+                'search' => $search,
+                'course' => $course,
+                'year_level' => $yearLevel,
+                'gender' => $gender,
+                'city' => $city,
+                'ethnicity' => $ethnicity,
+                'housing_status' => $housingStatus,
+                'pwd_only' => $pwdOnly,
+            ],
+            'filterOptions' => $filterOptions,
             'newStudentId' => $newStudentId,
             'flash' => [
                 'message' => $request->session()->get('message')
@@ -51,7 +100,7 @@ class StudentController extends Controller
             'last_name' => 'required|string|max:255',
             'student_id' => 'required|string|unique:students',
             'course' => 'required|string|max:255',
-            'year_level' => 'required|string|max:255',
+            'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year,Others',
             'gender' => 'required|in:Male,Female,Other',
             'birth_date' => 'required|date',
             'marital_status' => 'required|in:Single,Married',
@@ -105,7 +154,7 @@ class StudentController extends Controller
             'last_name' => 'required|string|max:255',
             'student_id' => 'required|string|unique:students,student_id,' . $student->id,
             'course' => 'required|string|max:255',
-            'year_level' => 'required|string|max:255',
+            'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year,Others',
             'gender' => 'required|in:Male,Female,Other',
             'birth_date' => 'required|date',
             'marital_status' => 'required|in:Single,Married',
@@ -148,5 +197,140 @@ class StudentController extends Controller
         session()->flash('message', 'Student deleted successfully!');
         
         return redirect('/student-list');
+    }
+
+    public function export(Request $request)
+    {
+        // Get same filters from index method
+        $search = $request->input('search', '');
+        $course = $request->input('course', '');
+        $yearLevel = $request->input('year_level', '');
+        $gender = $request->input('gender', '');
+        $city = $request->input('city', '');
+        $ethnicity = $request->input('ethnicity', '');
+        $housingStatus = $request->input('housing_status', '');
+        $pwdOnly = $request->input('pwd_only', false);
+        $page = $request->input('page', 1);
+        $format = $request->input('format', 'csv');
+        
+        $perPage = 10;
+
+        // Query with same logic as index() but get current page only
+        $students = Student::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('first_name', 'like', "%{$search}%")
+                        ->orWhere('middle_name', 'like', "%{$search}%")
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('student_id', 'like', "%{$search}%")
+                        ->orWhere('course', 'like', "%{$search}%")
+                        ->orWhere('year_level', 'like', "%{$search}%")
+                        ->orWhere('religion', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%")
+                        ->orWhere('barangay', 'like', "%{$search}%")
+                        ->orWhere('city', 'like', "%{$search}%")
+                        ->orWhere('province', 'like', "%{$search}%");
+                });
+            })
+            ->when($course, function ($query, $course) {
+                $query->where('course', $course);
+            })
+            ->when($yearLevel, function ($query, $yearLevel) {
+                $query->where('year_level', $yearLevel);
+            })
+            ->when($gender, function ($query, $gender) {
+                $query->where('gender', $gender);
+            })
+            ->when($city, function ($query, $city) {
+                $query->where('city', $city);
+            })
+            ->when($ethnicity, function ($query, $ethnicity) {
+                $query->where('ethnicity', $ethnicity);
+            })
+            ->when($housingStatus, function ($query, $housingStatus) {
+                $query->where('housing_status', $housingStatus);
+            })
+            ->when($pwdOnly, function ($query) {
+                $query->where('pwd', true);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+        
+        $currentPageStudents = $students->items();
+        
+        // Export based on format
+        if ($format === 'csv' || $format === 'excel') {
+            return $this->exportCSV($currentPageStudents, $format);
+        } elseif ($format === 'pdf') {
+            return $this->exportPDF($currentPageStudents);
+        }
+        
+        return redirect('/student-list');
+    }
+
+    private function exportCSV($students, $format)
+    {
+        // Both CSV and Excel will use CSV format (Excel can open CSV files)
+        $filename = $format === 'excel' ? 'students.xls' : 'students.csv';
+        
+        // Use Excel MIME type for .xls, CSV for .csv
+        $contentType = $format === 'excel' ? 'application/vnd.ms-excel' : 'text/csv';
+        
+        $headers = [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ];
+
+        $callback = function() use ($students) {
+            $file = fopen('php://output', 'w');
+            
+            // Add UTF-8 BOM for Excel compatibility
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Add headers
+            fputcsv($file, [
+                'Student ID',
+                'Name',
+                'Course',
+                'Year Level',
+                'Address',
+                'Gender',
+                'Marital Status',
+                'Religion',
+                'Family Income',
+                'Study Device'
+            ]);
+
+            // Add data
+            foreach ($students as $student) {
+                fputcsv($file, [
+                    $student->student_id,
+                    trim($student->first_name . ' ' . $student->middle_name . ' ' . $student->last_name),
+                    $student->course,
+                    $student->year_level,
+                    $student->address . ', ' . $student->barangay . ', ' . $student->city . ', ' . $student->province,
+                    $student->gender,
+                    $student->marital_status,
+                    $student->religion,
+                    $student->family_income_bracket,
+                    $student->study_device ?? 'N/A'
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    private function exportPDF($students)
+    {
+        // Serve as HTML that can be printed to PDF
+        return response()->view('exports.students-pdf', ['students' => $students])
+            ->header('Content-Type', 'text/html')
+            ->header('Content-Disposition', 'inline; filename="students.html"');
     }
 }

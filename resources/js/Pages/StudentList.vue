@@ -48,9 +48,120 @@
         <div class="admin-setting flex">
           <div class="search-bar">
             <i class="fas fa-search"></i>
-            <input v-model="search" class="main-input" type="text" placeholder="Search students..." @input="handleSearch" />
+            <input v-model="search" class="main-input" type="text" placeholder="Search students..." @input="handleFilters" />
           </div>
         </div>
+      </div>
+
+      <!-- Advanced Filters Section -->
+      <div class="filters-section">
+        <div class="filters-header">
+          <h3 class="filters-title">
+            <i class="fas fa-filter"></i> Filters
+            <span v-if="activeFiltersCount > 0" class="active-filters-badge">{{ activeFiltersCount }}</span>
+          </h3>
+          <button @click="toggleFilters" class="toggle-filters-btn">
+            {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
+            <i :class="showFilters ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+          </button>
+        </div>
+        
+        <Transition name="filter-slide">
+          <div v-if="showFilters" class="filters-grid">
+            <div class="filter-item">
+              <label class="filter-label">Course</label>
+              <select v-model="filterCourse" @change="handleFilters" class="filter-select">
+                <option value="">All Courses</option>
+                <option v-for="course in filterOptions.courses" :key="course" :value="course">
+                  {{ course }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label class="filter-label">Year Level</label>
+              <select v-model="filterYearLevel" @change="handleFilters" class="filter-select">
+                <option value="">All Year Levels</option>
+                <option v-for="year in filterOptions.yearLevels" :key="year" :value="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label class="filter-label">Gender</label>
+              <select v-model="filterGender" @change="handleFilters" class="filter-select">
+                <option value="">All Genders</option>
+                <option v-for="gender in filterOptions.genders" :key="gender" :value="gender">
+                  {{ gender }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label class="filter-label">City</label>
+              <select v-model="filterCity" @change="handleFilters" class="filter-select">
+                <option value="">All Cities</option>
+                <option v-for="city in filterOptions.cities" :key="city" :value="city">
+                  {{ city }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label class="filter-label">Ethnicity</label>
+              <select v-model="filterEthnicity" @change="handleFilters" class="filter-select">
+                <option value="">All</option>
+                <option v-for="ethnicity in filterOptions.ethnicities" :key="ethnicity" :value="ethnicity">
+                  {{ ethnicity }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label class="filter-label">Housing Status</label>
+              <select v-model="filterHousingStatus" @change="handleFilters" class="filter-select">
+                <option value="">All</option>
+                <option v-for="status in filterOptions.housingStatuses" :key="status" :value="status">
+                  {{ status }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-item filter-checkbox">
+              <label class="checkbox-label">
+                <input type="checkbox" v-model="filterPwdOnly" @change="handleFilters" class="filter-checkbox-input" />
+                <span class="checkbox-text">PWD Only</span>
+              </label>
+            </div>
+
+            <div class="filter-item filter-actions">
+              <button @click="clearFilters" class="clear-filters-btn">
+                <i class="fas fa-times-circle"></i> Clear All Filters
+              </button>
+            </div>
+
+            <div class="filter-item filter-actions">
+              <div class="export-dropdown-container">
+                <button @click="toggleExportMenu" class="export-btn">
+                  <i class="fas fa-download"></i> Export
+                  <i :class="showExportMenu ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+                </button>
+                <div v-if="showExportMenu" class="export-menu">
+                  <button @click="handleExport('csv')" class="export-option">
+                    <i class="fas fa-file-csv"></i> Export as CSV
+                  </button>
+                  <button @click="handleExport('excel')" class="export-option">
+                    <i class="fas fa-file-excel"></i> Export as Excel
+                  </button>
+                  <button @click="handleExport('pdf')" class="export-option">
+                    <i class="fas fa-file-pdf"></i> Export as PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Transition>
       </div>
 
       <div class="student-list">
@@ -138,7 +249,7 @@
 
 <script setup>
 import { Link, router, usePage } from '@inertiajs/vue3';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import debounce from 'lodash/debounce';
 
 const isSidebarOpen = ref(true);
@@ -161,7 +272,26 @@ const props = defineProps({
     type: Object,
     required: true,
     default: () => ({
-      search: ''
+      search: '',
+      course: '',
+      year_level: '',
+      gender: '',
+      city: '',
+      ethnicity: '',
+      housing_status: '',
+      pwd_only: false
+    })
+  },
+  filterOptions: {
+    type: Object,
+    required: true,
+    default: () => ({
+      courses: [],
+      yearLevels: [],
+      genders: [],
+      cities: [],
+      ethnicities: [],
+      housingStatuses: []
     })
   },
   newStudentId: {
@@ -172,6 +302,15 @@ const props = defineProps({
 
 // Initialize reactive refs
 const search = ref(props.filters?.search || '');
+const filterCourse = ref(props.filters?.course || '');
+const filterYearLevel = ref(props.filters?.year_level || '');
+const filterGender = ref(props.filters?.gender || '');
+const filterCity = ref(props.filters?.city || '');
+const filterEthnicity = ref(props.filters?.ethnicity || '');
+const filterHousingStatus = ref(props.filters?.housing_status || '');
+const filterPwdOnly = ref(props.filters?.pwd_only || false);
+const showFilters = ref(false);
+const showExportMenu = ref(false);
 const showDeleteModal = ref(false);
 const studentToDelete = ref(null);
 
@@ -229,28 +368,89 @@ watch(() => page.props.flash,
   { deep: true, immediate: true }
 );
 
-const handleSearch = debounce(() => {
-  router.get('/student-list', { 
+const handleFilters = debounce(() => {
+  const params = {
     search: search.value,
-    fields: [
-      'first_name',
-      'middle_name',
-      'last_name',
-      'student_id',
-      'course',
-      'year_level',
-      'religion',
-      'address',
-      'barangay',
-      'city',
-      'province'
-    ]
-  }, {
+    course: filterCourse.value,
+    year_level: filterYearLevel.value,
+    gender: filterGender.value,
+    city: filterCity.value,
+    ethnicity: filterEthnicity.value,
+    housing_status: filterHousingStatus.value,
+    pwd_only: filterPwdOnly.value ? '1' : ''
+  };
+  
+  // Remove empty filters
+  Object.keys(params).forEach(key => {
+    if (params[key] === '' || params[key] === null || params[key] === false) {
+      delete params[key];
+    }
+  });
+  
+  router.get('/student-list', params, {
     preserveState: true,
     replace: true,
     preserveScroll: true
   });
 }, 300);
+
+const toggleFilters = () => {
+  showFilters.value = !showFilters.value;
+};
+
+const clearFilters = () => {
+  search.value = '';
+  filterCourse.value = '';
+  filterYearLevel.value = '';
+  filterGender.value = '';
+  filterCity.value = '';
+  filterEthnicity.value = '';
+  filterHousingStatus.value = '';
+  filterPwdOnly.value = false;
+  handleFilters();
+};
+
+const toggleExportMenu = () => {
+  showExportMenu.value = !showExportMenu.value;
+};
+
+const handleExport = (format) => {
+  // Build URL with current filter params and current page
+  const params = new URLSearchParams({
+    format: format,
+    search: search.value,
+    course: filterCourse.value,
+    year_level: filterYearLevel.value,
+    gender: filterGender.value,
+    city: filterCity.value,
+    ethnicity: filterEthnicity.value,
+    housing_status: filterHousingStatus.value,
+    pwd_only: filterPwdOnly.value ? '1' : '',
+    page: props.students.current_page || 1
+  });
+  
+  // Remove empty params
+  for (let [key, value] of [...params.entries()]) {
+    if (!value) params.delete(key);
+  }
+  
+  // Open download URL
+  window.location.href = `/student-list/export?${params.toString()}`;
+  showExportMenu.value = false;
+};
+
+const activeFiltersCount = computed(() => {
+  let count = 0;
+  if (search.value) count++;
+  if (filterCourse.value) count++;
+  if (filterYearLevel.value) count++;
+  if (filterGender.value) count++;
+  if (filterCity.value) count++;
+  if (filterEthnicity.value) count++;
+  if (filterHousingStatus.value) count++;
+  if (filterPwdOnly.value) count++;
+  return count;
+});
 
 const confirmDelete = (student) => {
   studentToDelete.value = student;
@@ -279,7 +479,6 @@ const deleteStudent = () => {
   }
 };
 
-watch(search, handleSearch);
 </script>
 
 <style scoped>
@@ -889,5 +1088,310 @@ i.far { /* Regular icons */
 
 i.fab {
     font-weight: 400 !important; 
+}
+
+/* Filter Section Styles */
+.filters-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filters-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2D3748;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.filters-title .fas.fa-filter {
+  color: #235F23;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font-size: 18px;
+}
+
+.active-filters-badge {
+  background-color: #235F23;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+  display: inline-block;
+}
+
+.toggle-filters-btn {
+  background-color: #EDF2F7;
+  color: #2D3748;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.toggle-filters-btn:hover {
+  background-color: #E2E8F0;
+}
+
+.toggle-filters-btn .fas {
+  font-size: 12px;
+  background-color: transparent;
+  color: #2D3748;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4A5568;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2D3748;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-select:hover {
+  border-color: #CBD5E0;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #235F23;
+  box-shadow: 0 0 0 3px rgba(35, 95, 35, 0.1);
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #2D3748;
+  font-weight: 500;
+}
+
+.filter-checkbox-input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #235F23;
+}
+
+.checkbox-text {
+  user-select: none;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.clear-filters-btn {
+  background-color: #E53E3E;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.clear-filters-btn:hover {
+  background-color: #C53030;
+}
+
+.clear-filters-btn .fas {
+  background-color: transparent;
+  color: white;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font-size: 14px;
+}
+
+/* Filter transition animations */
+.filter-slide-enter-active,
+.filter-slide-leave-active {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.filter-slide-enter-from {
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-10px);
+}
+
+.filter-slide-enter-to {
+  opacity: 1;
+  max-height: 500px;
+  transform: translateY(0);
+}
+
+.filter-slide-leave-from {
+  opacity: 1;
+  max-height: 500px;
+  transform: translateY(0);
+}
+
+.filter-slide-leave-to {
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-10px);
+}
+
+/* Export Button and Dropdown Styles */
+.export-dropdown-container {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.export-btn {
+  background-color: #235F23;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.export-btn:hover {
+  background-color: #1a4a1a;
+}
+
+.export-btn .fas {
+  background-color: transparent;
+  color: white;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font-size: 14px;
+}
+
+.export-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 4px;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.export-option {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #2D3748;
+  transition: all 0.2s ease;
+}
+
+.export-option:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.export-option:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.export-option:hover {
+  background-color: #F7FAFC;
+}
+
+.export-option .fas {
+  color: #235F23;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font-size: 14px;
 }
 </style>

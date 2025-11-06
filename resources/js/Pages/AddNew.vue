@@ -135,7 +135,14 @@
             </div>
             <div class="form-group">
               <label>Year Level</label>
-              <input v-model="form.year_level" type="text" required />
+              <select v-model="form.year_level" required>
+                <option value="">Select Year Level</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="Others">Others</option>
+              </select>
               <div v-if="errors.year_level" class="error">{{ errors.year_level }}</div>
             </div>
             <div class="form-group">

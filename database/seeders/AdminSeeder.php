@@ -10,10 +10,15 @@ class AdminSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('admin123'),
-        ]);
+        // Create default admin user
+        // IMPORTANT: Change these credentials immediately after first login!
+        User::firstOrCreate(
+            ['email' => 'studentaffairs@snsu.edu.ph'],
+            [
+                'name' => 'SNSU Student Affairs',
+                'email' => 'studentaffairs@snsu.edu.ph',
+                'password' => Hash::make('SNSU2024@SecurePass'), // Change this password immediately!
+            ]
+        );
     }
 }

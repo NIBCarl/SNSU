@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     
     // Student routes
     Route::get('/student-list', [StudentController::class, 'index'])->name('student-list');
+    Route::get('/student-list/export', [StudentController::class, 'export'])->name('student-list.export');
     Route::get('/add-new', function () {
         return Inertia::render('AddNew');
     })->name('add-new');

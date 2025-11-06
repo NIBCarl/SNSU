@@ -6,6 +6,12 @@
 
         <title inertia>{{ config('app.name', 'SNSU') }}</title>
 
+        <!-- Favicons -->
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="icon" type="image/png" sizes="512x512" href="/assets/logo.png">
+        <link rel="apple-touch-icon" sizes="512x512" href="/assets/logo.png">
+        <link rel="shortcut icon" href="/assets/logo.png">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
