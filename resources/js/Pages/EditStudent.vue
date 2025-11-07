@@ -213,24 +213,14 @@
               <div v-if="errors.household_size" class="error">{{ errors.household_size }}</div>
             </div>
             <div class="form-group">
-              <label>Parents' Education</label>
-              <select v-model="form.parents_education" required>
-                <option value="">Select Education Level</option>
-                <option value="Elementary">Elementary</option>
-                <option value="High School">High School</option>
-                <option value="College">College</option>
-                <option value="Post Graduate">Post Graduate</option>
-              </select>
-              <div v-if="errors.parents_education" class="error">{{ errors.parents_education }}</div>
-            </div>
-            <div class="form-group">
               <label>Transportation Mode</label>
               <select v-model="form.transportation_mode" required>
                 <option value="">Select Transportation</option>
-                <option value="Walking">Walking</option>
-                <option value="Public Transport">Public Transport</option>
-                <option value="Private Vehicle">Private Vehicle</option>
-                <option value="School Bus">School Bus</option>
+                <option value="Car">Car</option>
+                <option value="Jeep/Multicab">Jeep/Multicab</option>
+                <option value="Motorcycle">Motorcycle</option>
+                <option value="Tricycle">Tricycle</option>
+                <option value="None">None</option>
               </select>
               <div v-if="errors.transportation_mode" class="error">{{ errors.transportation_mode }}</div>
             </div>
@@ -254,7 +244,9 @@
                 <input type="checkbox" v-model="form.pwd" class="custom-control-input" id="pwd">
                 <label class="custom-control-label" for="pwd">Yes</label>
               </div>
+              <input v-if="form.pwd" v-model="form.pwd_id" type="text" placeholder="PWD ID No." />
               <div v-if="errors.pwd" class="error">{{ errors.pwd }}</div>
+              <div v-if="errors.pwd_id" class="error">{{ errors.pwd_id }}</div>
             </div>
             <div class="form-group">
               <label>Housing Status</label>
@@ -330,11 +322,11 @@ const form = useForm({
   monthly_rental: props.student?.monthly_rental || 0,
   family_income_bracket: props.student?.family_income_bracket || '',
   household_size: props.student?.household_size || '',
-  parents_education: props.student?.parents_education || '',
   transportation_mode: props.student?.transportation_mode || '',
   travel_time_minutes: props.student?.travel_time_minutes || '',
   ethnicity: props.student?.ethnicity || '',
   pwd: props.student?.pwd || false,
+  pwd_id: props.student?.pwd_id || '',
   housing_status: props.student?.housing_status || '',
   family_income: props.student?.family_income || 0,
 });

@@ -13,7 +13,7 @@
           <div class="not-flex">
             <Link href="/dashboard" class="dashboard"><i class="fas fa-home"></i>Dashboard</Link>
             <Link href="/student-list" class="lists"><i class="fas fa-bar-chart"></i>Student Lists</Link>
-            <Link href="/add-new" class="add-new"><i class="fas fa-plus"></i>Add new</Link>
+            <Link href="/add-new" class="dashboard"><i class="fas fa-plus"></i>Add new</Link>
           </div>
         </div>
         <div class="cta-button-dashboard">
@@ -845,6 +845,9 @@ h1 {
   border-radius: 12px;
   font-size: 24px;
   margin-bottom: 21px;
+  color: #235F23;
+  background-color: #ffffff;
+  padding: 12px;
 }
 .student-info-name {
   align-items: center;

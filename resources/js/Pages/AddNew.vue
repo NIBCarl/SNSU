@@ -16,8 +16,8 @@
         <div class="dashboard-list">
           <div class="not-flex">
             <Link href="/dashboard" class="dashboard"><i class="fas fa-home"></i>Dashboard</Link>
-            <Link href="/student-list" class="lists"><i class="fas fa-bar-chart"></i>Student Lists</Link>
-            <Link href="/add-new" class="add-new"><i class="fas fa-plus"></i>Add new</Link>
+            <Link href="/student-list" class="dashboard"><i class="fas fa-bar-chart"></i>Student Lists</Link>
+            <Link href="/add-new" class="lists"><i class="fas fa-plus"></i>Add new</Link>
           </div>
         </div>
         <div class="cta-button-dashboard">
@@ -165,6 +165,39 @@
               <div v-if="errors.cellphone_number" class="error">{{ errors.cellphone_number }}</div>
             </div>
             <div class="form-group">
+              <label>Father's Name</label>
+              <input v-model="form.father_name" type="text" required />
+              <div v-if="errors.father_name" class="error">{{ errors.father_name }}</div>
+            </div>
+            <div class="form-group">
+              <label>Mother's Name</label>
+              <input v-model="form.mother_name" type="text" required />
+              <div v-if="errors.mother_name" class="error">{{ errors.mother_name }}</div>
+            </div>
+            <div class="form-group">
+              <label>Family Income (Monthly Gross)</label>
+              <select v-model="form.family_income" required>
+                <option value="">Select Family Income</option>
+                <option value="Php 62,000 & Below">Php 62,000 & Below</option>
+                <option value="Php 62,100 - Php 101,000">Php 62,100 - Php 101,000</option>
+                <option value="Php 101,100 - Php 151,000">Php 101,100 - Php 151,000</option>
+                <option value="Php 191,100 - Php 231,000">Php 191,100 - Php 231,000</option>
+                <option value="Php 231,100 - Php 271,000">Php 231,100 - Php 271,000</option>
+                <option value="Php 271,100 - Php 301,000">Php 271,100 - Php 301,000</option>
+                <option value="Php 301,100 - Php 351,000">Php 301,100 - Php 351,000</option>
+                <option value="Php 351,100 - Php 391,000">Php 351,100 - Php 391,000</option>
+                <option value="Php 391,100 - Php 431,000">Php 391,100 - Php 431,000</option>
+                <option value="Php 431,100 - Php 741,000">Php 431,100 - Php 741,000</option>
+                <option value="Php 471,100 - Php 501,000">Php 471,100 - Php 501,000</option>
+                <option value="Php 501,100 - Php 551,000">Php 501,100 - Php 551,000</option>
+                <option value="Php 551,100 - Php 591,000">Php 551,100 - Php 591,000</option>
+                <option value="Php 591,100 - Php 603,000">Php 591,100 - Php 603,000</option>
+                <option value="Php 603,000 and above">Php 603,000 and above</option>
+                <option value="N/A">N/A</option>
+              </select>
+              <div v-if="errors.family_income" class="error">{{ errors.family_income }}</div>
+            </div>
+            <div class="form-group">
               <label>Study Device</label>
               <select v-model="form.study_device" required>
                 <option value="">Select Study Device</option>
@@ -195,7 +228,14 @@
             </div>
             <div class="form-group">
               <label>Daily Transportation Fare</label>
-              <input v-model="form.daily_fare" type="number" min="0" step="0.01" />
+              <select v-model="form.daily_fare">
+                <option value="">Select Daily Fare</option>
+                <option value="Php 20.00 - Php 50.00">Php 20.00 - Php 50.00</option>
+                <option value="Php. 51.00 - Php 100.00">Php. 51.00 - Php 100.00</option>
+                <option value="Php 101.00 - Php 200.00">Php 101.00 - Php 200.00</option>
+                <option value="Php 201.00 - Php 300.00">Php 201.00 - Php 300.00</option>
+                <option value="N/A">N/A</option>
+              </select>
               <div v-if="errors.daily_fare" class="error">{{ errors.daily_fare }}</div>
             </div>
             <div class="form-group">
@@ -204,40 +244,19 @@
               <div v-if="errors.monthly_rental" class="error">{{ errors.monthly_rental }}</div>
             </div>
             <div class="form-group">
-              <label>Family Income Bracket</label>
-              <select v-model="form.family_income_bracket" required>
-                <option value="">Select Income Bracket</option>
-                <option value="Below ₱10,000">Below ₱10,000</option>
-                <option value="₱10,000 - ₱30,000">₱10,000 - ₱30,000</option>
-                <option value="₱30,000 - ₱50,000">₱30,000 - ₱50,000</option>
-                <option value="Above ₱50,000">Above ₱50,000</option>
-              </select>
-              <div v-if="errors.family_income_bracket" class="error">{{ errors.family_income_bracket }}</div>
-            </div>
-            <div class="form-group">
               <label>Household Size</label>
               <input v-model="form.household_size" type="number" min="1" required />
               <div v-if="errors.household_size" class="error">{{ errors.household_size }}</div>
             </div>
             <div class="form-group">
-              <label>Parents' Education</label>
-              <select v-model="form.parents_education" required>
-                <option value="">Select Education Level</option>
-                <option value="Elementary">Elementary</option>
-                <option value="High School">High School</option>
-                <option value="College">College</option>
-                <option value="Post Graduate">Post Graduate</option>
-              </select>
-              <div v-if="errors.parents_education" class="error">{{ errors.parents_education }}</div>
-            </div>
-            <div class="form-group">
               <label>Transportation Mode</label>
               <select v-model="form.transportation_mode" required>
                 <option value="">Select Transportation</option>
-                <option value="Walking">Walking</option>
-                <option value="Public Transport">Public Transport</option>
-                <option value="Private Vehicle">Private Vehicle</option>
-                <option value="School Bus">School Bus</option>
+                <option value="Car">Car</option>
+                <option value="Jeep/Multicab">Jeep/Multicab</option>
+                <option value="Motorcycle">Motorcycle</option>
+                <option value="Tricycle">Tricycle</option>
+                <option value="None">None</option>
               </select>
               <div v-if="errors.transportation_mode" class="error">{{ errors.transportation_mode }}</div>
             </div>
@@ -261,7 +280,9 @@
                 <input type="checkbox" v-model="form.pwd" class="custom-control-input" id="pwd">
                 <label class="custom-control-label" for="pwd">Yes</label>
               </div>
+              <input v-if="form.pwd" v-model="form.pwd_id" type="text" placeholder="PWD ID No." />
               <div v-if="errors.pwd" class="error">{{ errors.pwd }}</div>
+              <div v-if="errors.pwd_id" class="error">{{ errors.pwd_id }}</div>
             </div>
             <div class="form-group">
               <label>Housing Status</label>
@@ -273,11 +294,6 @@
                 <option value="Other">Other</option>
               </select>
               <div v-if="errors.housing_status" class="error">{{ errors.housing_status }}</div>
-            </div>
-            <div class="form-group">
-              <label>Family Income (Annual)</label>
-              <input type="number" v-model="form.family_income" required min="0" step="0.01">
-              <div v-if="errors.family_income" class="error">{{ errors.family_income }}</div>
             </div>
           </div>
           <div class="button-container">
@@ -341,17 +357,18 @@ const form = useForm({
   is_solo_parent: false,
   solo_parent_id: '',
   has_part_time_job: false,
-  daily_fare: null, // Use null for numbers that can be empty
+  daily_fare: '',
   monthly_rental: null, // Use null for numbers that can be empty
-  family_income_bracket: '',
+  father_name: '',
+  mother_name: '',
   household_size: null, // Use null for numbers that can be empty
-  parents_education: '',
   transportation_mode: '',
   travel_time_minutes: null, // Use null for numbers that can be empty
   ethnicity: '',
   pwd: false,
+  pwd_id: '',
   housing_status: '',
-  family_income: null, // Use null for numbers that can be empty
+  family_income: ''
 });
 
 // Method to toggle the admin profile modal
@@ -483,7 +500,7 @@ body {
 ul {
     list-style-type: none;
 }
-.fas.fa-plus {
+.lists .fas.fa-plus {
     font-size: 15px;
     color: #ffffff;
     background-color: #235F23;
@@ -491,7 +508,8 @@ ul {
     padding: 7.5px;
     margin-right: 11.5px;
 }
-.fas.fa-bar-chart, .fas.fa-home {
+.dashboard .fas.fa-home, 
+.dashboard .fas.fa-bar-chart {
     font-size: 15px;
     color: #235F23;
     background-color: #ffffff;
@@ -499,7 +517,7 @@ ul {
     padding: 7.5px;
     margin-right: 11.5px;
 }
-.add-new{
+.lists{
     font-size: 12px;
     font-weight: 700;
     color: #2D3748;
@@ -507,7 +525,7 @@ ul {
     border-radius: 15px;
     box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.2);
 }
-.lists, .dashboard {
+.dashboard, .add-new {
     font-size: 12px;
     font-weight: 700;
     color: #A0AEC0;
@@ -669,6 +687,9 @@ h1 {
     border-radius: 12px;
     font-size: 24px;
     margin-bottom: 21px;
+    color: #235F23;
+    background-color: #ffffff;
+    padding: 12px;
 }
 h2 {
     margin-bottom: 15px;
@@ -749,7 +770,7 @@ input[type="radio"] {
     cursor: pointer;
 }
 .modal {
-    display: none;
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;

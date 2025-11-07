@@ -27,21 +27,22 @@ class Student extends Model
         'marital_status',
         'religion',
         'cellphone_number',
+        'father_name',
+        'mother_name',
+        'family_income',
         'study_device',
         'is_solo_parent',
         'solo_parent_id',
         'has_part_time_job',
         'daily_fare',
         'monthly_rental',
-        'family_income_bracket',
         'household_size',
-        'parents_education',
         'transportation_mode',
         'travel_time_minutes',
         'ethnicity',
         'pwd',
-        'housing_status',
-        'family_income'
+        'pwd_id',
+        'housing_status'
     ];
 
     protected $dates = ['birth_date'];

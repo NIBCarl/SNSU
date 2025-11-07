@@ -1,5 +1,8 @@
 <template>
     <div class="sign-in-screen">
+        <div class="student-registration-link">
+            <a href="/" class="registration-link">Student Registration</a>
+        </div>
         <div class="new-design-wrapper">
             <div class="new-design">
                 <div class="main-dashboard">
@@ -260,5 +263,28 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.student-registration-link {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  z-index: 1000;
+}
+
+.registration-link {
+  color: #235f23;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 2px solid #235f23;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.registration-link:hover {
+  background-color: #235f23;
+  color: white;
 }
 </style>

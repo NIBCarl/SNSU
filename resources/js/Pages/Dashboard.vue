@@ -13,20 +13,16 @@
         </div>
         <div class="dashboard-list">
           <div class="not-flex">
-            <Link href="/dashboard" class="dashboard"><i class="fas fa-home"></i>Dashboard</Link>
-            <Link href="/student-list" class="lists"><i class="fas fa-chart-bar"></i>Student Lists</Link>
-            <Link href="/add-new" class="add-new"><i class="fas fa-plus"></i>Add new</Link>
+            <Link href="/dashboard" class="lists"><i class="fas fa-home"></i>Dashboard</Link>
+            <Link href="/student-list" class="dashboard"><i class="fas fa-chart-bar"></i>Student Lists</Link>
+            <Link href="/add-new" class="dashboard"><i class="fas fa-plus"></i>Add new</Link>
           </div>
         </div>
         <div class="cta-button-dashboard">
           <i class="fas fa-plus not-circle"></i>
           <h1 class="cta-button-dashboard-head">Add new</h1>
           <p class="cta-text">Add new student info</p>
-          <Link href="/add-new" style="text-decoration: none; color: black;">
-            <button class="button-1">
-              <div class="">Click here</div>
-            </button>
-          </Link>
+          <Link href="/add-new" class="button-1">Click here</Link>
         </div>
       </div>
     </Transition>
@@ -40,10 +36,6 @@
         </button>
         <h1 class="main-title"><span class="gray">Pages</span> / Dashboard</h1>
         <div class="admin-setting flex">
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input class="main-input" type="text" v-model="searchQuery" placeholder="Search" />
-          </div>
           <ul class="admin-icons flex">
             <Link href="/profile" class="admin">
               <i class="fas fa-user admin-user-icon"></i>admin
@@ -117,36 +109,6 @@
               <canvas id="incomeChart"></canvas>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="total-icons flex">
-        <div class="total-cont flex">
-          <div class="total-content">
-            <h1 class="sub-headline">Total records</h1>
-            <h1 class="headline-total">{{ totals.totalStudents }}</h1>
-          </div>
-          <i class="fas fa-user icon-design"></i>
-        </div>
-        <div class="total-cont flex">
-          <div class="total-content">
-            <h1 class="sub-headline">Indigenous People</h1>
-            <h1 class="headline-total">{{ totals.indigenousPeople }}</h1>
-          </div>
-          <i class="fas fa-user icon-design"></i>
-        </div>
-        <div class="total-cont flex">
-          <div class="total-content">
-            <h1 class="sub-headline">Person with Disability</h1>
-            <h1 class="headline-total">{{ totals.pwd }}</h1>
-          </div>
-          <i class="fas fa-user icon-design"></i>
-        </div>
-        <div class="total-cont flex">
-          <div class="total-content">
-            <h1 class="sub-headline">Renting a House</h1>
-            <h1 class="headline-total">{{ totals.renting }}</h1>
-          </div>
-          <i class="fas fa-user icon-design"></i>
         </div>
       </div>
       <div class="dashboard-text">
@@ -224,7 +186,6 @@ const props = defineProps({
   locationStats: Array
 });
 
-const searchQuery = ref('');
 const openModal = ref(false);
 const totals = ref({
   totalStudents: 0,
@@ -540,25 +501,25 @@ onMounted(() => {
 ul {
   list-style-type: none;
 }
-.dashboard-list .fas {
+.lists .fas.fa-home {
   font-size: 15px;
+  color: #ffffff;
+  background-color: #235F23;
+  border-radius: 12px;
+  padding: 7.5px;
+  margin-right: 11.5px;
+}
+.dashboard .fas.fa-chart-bar, 
+.dashboard .fas.fa-plus {
+  font-size: 15px;
+  color: #235F23;
+  background-color: #ffffff;
   border-radius: 12px;
   padding: 7.5px;
   margin-right: 11.5px;
 }
 
-.dashboard .fas.fa-home {
-  color: #ffffff;
-  background-color: #235F23;
-}
-
-.lists .fas.fa-chart-bar, 
-.add-new .fas.fa-plus {
-  color: #235F23;
-  background-color: #ffffff;
-}
-
-.dashboard{
+.lists{
   font-size: 12px;
   font-weight: 700;
   color: #2D3748;
@@ -566,7 +527,7 @@ ul {
   border-radius: 15px;
   box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.2);
 }
-.lists, .add-new {
+.dashboard, .add-new {
   font-size: 12px;
   font-weight: 700;
   color: #A0AEC0;
@@ -584,46 +545,17 @@ a:hover {
   display: flex;
   flex-direction: column;
 }
-.total-icons {
-  justify-content: space-between;
-  align-items: center;
-}
-.total-cont {
-  padding: 17.5px;
-  box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.2);
-  align-items: center;
-  border-radius: 12px;
-  width: 382px;
-  justify-content: space-between;
-}
-.sub-headline {
-  color: #A0AEC0;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 18px;
-}
-.headline-total {
-
-  font-size: 18px;
-  font-weight: 700;
-  color: #2D3748;
-  line-height: 25px;
-
-}
-.icon-design {
-  color: #ffffff;
-  background-color: #235F23;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 21px;
-}
 h1 {
   margin: 0;
+}
+.dashboard-stats {
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 .dashboard-text {
   display: flex;
   column-gap: 20px;
-  margin-top: 23.5px;
+  margin-top: 24px;
 }
 .dashboard-text-inner, .dashboard-text-inner-2 {
   display: flex;
@@ -749,6 +681,9 @@ h1 {
   border-radius: 12px;
   font-size: 24px;
   margin-bottom: 21px;
+  color: #235F23;
+  background-color: #ffffff;
+  padding: 12px;
 }
 .cog-icon {
   font-size: 15px;
@@ -816,6 +751,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 24px;
 }
 
 .stat-card {
@@ -895,16 +831,6 @@ i.far { /* Regular icons */
 /* fab (Brand icons) usually have their own weight defined by FA, but can be 400 too */
 i.fab {
     font-weight: 400 !important; /* Or as appropriate for brand icons */
-}
-
-.total-icons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.total-cont {
-  flex: 1 1 200px;
 }
 
 .dashboard-text {

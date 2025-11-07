@@ -57,6 +57,7 @@
                             <div>
                                 <label for="gender">Gender</label>
                                 <select id="gender" v-model="form.gender" class="input-field" required>
+                                    <option value="">Select Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                     <option value="Other">Other</option>
@@ -89,7 +90,14 @@
                         </div>
                         <div>
                             <label for="year_level">Year Level</label>
-                            <input type="text" id="year_level" v-model="form.year_level" class="input-field" required />
+                            <select id="year_level" v-model="form.year_level" class="input-field" required>
+                                <option value="">Select Year Level</option>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                                <option value="Others">Others</option>
+                            </select>
                         </div>
 
 
@@ -117,28 +125,51 @@
                             <input type="text" id="postal_code" v-model="form.postal_code" class="input-field" required />
                         </div>
 
+                        <!-- Parent Information Section -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="father_name">Father's Name</label>
+                                <input type="text" id="father_name" v-model="form.father_name" class="input-field" placeholder="e.g., Juan Dela Cruz" required />
+                            </div>
+                            <div>
+                                <label for="mother_name">Mother's Name</label>
+                                <input type="text" id="mother_name" v-model="form.mother_name" class="input-field" placeholder="e.g., Maria Dela Cruz" required />
+                            </div>
+                            <div>
+                                <label for="family_income">Family Income (Monthly Gross)</label>
+                                <select id="family_income" v-model="form.family_income" class="input-field" required>
+                                    <option value="">Select Family Income</option>
+                                    <option value="Php 62,000 & Below">Php 62,000 & Below</option>
+                                    <option value="Php 62,100 - Php 101,000">Php 62,100 - Php 101,000</option>
+                                    <option value="Php 101,100 - Php 151,000">Php 101,100 - Php 151,000</option>
+                                    <option value="Php 191,100 - Php 231,000">Php 191,100 - Php 231,000</option>
+                                    <option value="Php 231,100 - Php 271,000">Php 231,100 - Php 271,000</option>
+                                    <option value="Php 271,100 - Php 301,000">Php 271,100 - Php 301,000</option>
+                                    <option value="Php 301,100 - Php 351,000">Php 301,100 - Php 351,000</option>
+                                    <option value="Php 351,100 - Php 391,000">Php 351,100 - Php 391,000</option>
+                                    <option value="Php 391,100 - Php 431,000">Php 391,100 - Php 431,000</option>
+                                    <option value="Php 431,100 - Php 741,000">Php 431,100 - Php 741,000</option>
+                                    <option value="Php 471,100 - Php 501,000">Php 471,100 - Php 501,000</option>
+                                    <option value="Php 501,100 - Php 551,000">Php 501,100 - Php 551,000</option>
+                                    <option value="Php 551,100 - Php 591,000">Php 551,100 - Php 591,000</option>
+                                    <option value="Php 591,100 - Php 603,000">Php 591,100 - Php 603,000</option>
+                                    <option value="Php 603,000 and above">Php 603,000 and above</option>
+                                    <option value="N/A">N/A</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- Socio-Economic Information Section -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label for="study_device">Primary Study Device</label>
                                 <select id="study_device" v-model="form.study_device" class="input-field">
-                                    <option :value="null" disabled>Select device</option>
+                                    <option value="">Select Study Device</option>
                                     <option value="Laptop">Laptop</option>
                                     <option value="Tablet">Tablet</option>
                                     <option value="Desktop">Desktop</option>
                                     <option value="Mobile Phone">Mobile Phone</option>
                                 </select>
-                            </div>
-                             <div>
-                                <label for="family_income">Family Income (Monthly Gross)</label>
-                                <input type="number" id="family_income" v-model.number="form.family_income" class="input-field" placeholder="e.g., 25000" required />
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                           <div>
-                                <label for="family_income_bracket">Family Income Bracket</label>
-                                <input type="text" id="family_income_bracket" v-model="form.family_income_bracket" class="input-field" placeholder="e.g., Php 20,000 - Php 29,999" required />
                             </div>
                             <div>
                                 <label for="household_size">Household Size</label>
@@ -148,12 +179,9 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label for="parents_education">Parents' Highest Educational Attainment</label>
-                                <input type="text" id="parents_education" v-model="form.parents_education" class="input-field" placeholder="e.g., College Graduate" required />
-                            </div>
-                            <div>
                                 <label for="housing_status">Housing Status</label>
                                 <select id="housing_status" v-model="form.housing_status" class="input-field" required>
+                                    <option value="">Select Housing Status</option>
                                     <option value="Owned">Owned</option>
                                     <option value="Renting">Renting</option>
                                     <option value="Living with Relatives">Living with Relatives</option>
@@ -182,12 +210,23 @@
                                 <input type="checkbox" id="pwd" v-model="form.pwd" class="checkbox-input" />
                                 <label for="pwd" class="ml-2">Are you a Person with Disability (PWD)?</label>
                             </div>
+                            <div v-if="form.pwd">
+                                <label for="pwd_id">PWD ID Number</label>
+                                <input type="text" id="pwd_id" v-model="form.pwd_id" class="input-field" placeholder="PWD ID No." />
+                            </div>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label for="daily_fare">Daily Fare (PHP)</label>
-                                <input type="number" id="daily_fare" v-model.number="form.daily_fare" class="input-field" placeholder="e.g., 50" />
+                                <select id="daily_fare" v-model="form.daily_fare" class="input-field">
+                                    <option value="">Select Daily Fare</option>
+                                    <option value="Php 20.00 - Php 50.00">Php 20.00 - Php 50.00</option>
+                                    <option value="Php. 51.00 - Php 100.00">Php. 51.00 - Php 100.00</option>
+                                    <option value="Php 101.00 - Php 200.00">Php 101.00 - Php 200.00</option>
+                                    <option value="Php 201.00 - Php 300.00">Php 201.00 - Php 300.00</option>
+                                    <option value="N/A">N/A</option>
+                                </select>
                             </div>
                             <div>
                                 <label for="monthly_rental">Monthly Boarding/Rental (PHP, if applicable)</label>
@@ -199,7 +238,14 @@
                          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label for="transportation_mode">Mode of Transportation to School</label>
-                                <input type="text" id="transportation_mode" v-model="form.transportation_mode" class="input-field" placeholder="e.g., Jeepney, Tricycle" required />
+                                <select id="transportation_mode" v-model="form.transportation_mode" class="input-field" required>
+                                    <option value="">Select Transportation</option>
+                                    <option value="Car">Car</option>
+                                    <option value="Jeep/Multicab">Jeep/Multicab</option>
+                                    <option value="Motorcycle">Motorcycle</option>
+                                    <option value="Tricycle">Tricycle</option>
+                                    <option value="None">None</option>
+                                </select>
                             </div>
                             <div>
                                 <label for="travel_time_minutes">Travel Time to School (minutes)</label>
@@ -208,6 +254,7 @@
                              <div>
                                 <label for="ethnicity">Ethnicity</label>
                                 <select id="ethnicity" v-model="form.ethnicity" class="input-field" required>
+                                    <option value="">Select Ethnicity</option>
                                     <option value="Indigenous">Indigenous</option>
                                     <option value="Non-Indigenous">Non-Indigenous</option>
                                 </select>
@@ -242,9 +289,9 @@ const form = useForm({
     student_id: '',
     course: '',
     year_level: '',
-    gender: 'Male', // Default or set to null
+    gender: '', // Set to '' or a default like 'Male' if appropriate
     birth_date: '',
-    marital_status: 'Single', // Default or set to null
+    marital_status: 'Single', // Default value
     religion: '',
     cellphone_number: '',
     address: '',
@@ -252,21 +299,22 @@ const form = useForm({
     city: '',
     province: '',
     postal_code: '',
-    study_device: null,
+    study_device: '',
     is_solo_parent: false,
     solo_parent_id: '',
     has_part_time_job: false,
-    daily_fare: null,
+    daily_fare: '',
     monthly_rental: null,
-    family_income_bracket: '',
+    father_name: '',
+    mother_name: '',
     household_size: null,
-    parents_education: '',
     transportation_mode: '',
     travel_time_minutes: null,
-    ethnicity: 'Non-Indigenous', // Default or set to null
+    ethnicity: '',
     pwd: false,
-    housing_status: 'Owned', // Default or set to null
-    family_income: null,
+    pwd_id: '',
+    housing_status: '',
+    family_income: '',
     processing: false,
 });
 
