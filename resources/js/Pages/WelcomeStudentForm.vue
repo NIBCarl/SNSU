@@ -3,7 +3,7 @@
         <!-- Top Navigation -->
         <nav class="w-full px-6 py-3 bg-white shadow-md sticky top-0 z-50">
             <div class="flex justify-end">
-                <inertia-link href="/login" class="px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                <inertia-link href="/login" class="login-button">
                     Login
                 </inertia-link>
             </div>
@@ -696,6 +696,48 @@ select.input-field {
 /* Additional styling for the logo container if needed */
 .logo-container {
     /* Example: Add a background or border if desired */
+}
+
+/* ===== ENHANCED LOGIN BUTTON IN NAVIGATION ===== */
+.login-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    /* Small shadow for depth */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 4px 8px rgba(35, 95, 35, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-button:hover {
+    background: linear-gradient(to bottom, #3a9a3a 0%, #2d7d2d 100%);
+    /* Bigger shadow on hover for prominence */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.3) inset,
+        0 6px 12px rgba(35, 95, 35, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.login-button:active {
+    transform: translateY(0);
+    /* Inset shadow to appear pressed */
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.2) inset,
+        0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 </style> 

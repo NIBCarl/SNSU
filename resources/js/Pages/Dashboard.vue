@@ -395,9 +395,6 @@ onMounted(() => {
   display: flex;
 }
 
-.inner-container {
-}
-
 .first-column {
   flex-shrink: 0;
   width: 280px;
@@ -669,7 +666,7 @@ h1 {
 .dashboard-text-inner {
   flex: 1;
   display: flex;
-  padding: 24px;
+  padding: 16px;
   background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%);
   /* Layered shadow for depth */
   box-shadow: 
@@ -703,12 +700,12 @@ h1 {
 .text-wrapper-2 {
   font-size: 18px;
   line-height: 26px;
-  padding-bottom: 11px;
+  padding-bottom: 16px;
 }
 .p {
   color: #383838;
   font-size: 14px;
-  padding-bottom: 73px;
+  padding-bottom: 16px;
 }
 .button {
   color: #2D3748;

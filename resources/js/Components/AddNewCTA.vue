@@ -23,12 +23,14 @@ import { Link } from '@inertiajs/vue3';
   font-size: 14px;
   font-weight: 700;
   color: #ffffff;
+  margin-bottom: 12px;
 }
 
 .cta-text {
   font-size: 12px;
   font-weight: 400;
   color: #ffffff;
+  margin-bottom: 12px;
 }
 
 .cta-button-dashboard .fas.fa-plus {

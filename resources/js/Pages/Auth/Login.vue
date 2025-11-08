@@ -108,7 +108,7 @@ body {
 
 
 .sign-in-screen .image {
-  height: 872px;
+  height: 1052px;
   left: 1058px;
   position: absolute;
   top: 0;

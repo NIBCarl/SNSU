@@ -24,10 +24,25 @@ class LoginController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        // Attempt to authenticate the user
-        if (Auth::attempt($credentials)) {
+        // Get the remember me value (defaults to false if not provided)
+        $remember = $request->boolean('remember');
+        
+        // Debug logging
+        \Log::info('Login attempt', [
+            'email' => $request->email,
+            'remember' => $remember,
+            'remember_raw' => $request->input('remember')
+        ]);
+
+        // Attempt to authenticate the user with remember me functionality
+        if (Auth::attempt($credentials, $remember)) {
             // If successful, redirect to dashboard
             $request->session()->regenerate();
+            
+            \Log::info('Login successful', [
+                'user_id' => Auth::id(),
+                'remember_token_set' => !empty(Auth::user()->remember_token)
+            ]);
             
             return redirect()->intended(route('dashboard'));
         }

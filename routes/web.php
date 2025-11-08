@@ -37,6 +37,25 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Debug route to check remember token (remove in production)
+Route::get('/debug-remember', function () {
+    if (auth()->check()) {
+        $user = auth()->user();
+        return response()->json([
+            'logged_in' => true,
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'remember_token_exists' => !empty($user->remember_token),
+            'remember_token_preview' => $user->remember_token ? substr($user->remember_token, 0, 10) . '...' : null,
+            'cookies' => request()->cookies->all(),
+        ]);
+    }
+    return response()->json([
+        'logged_in' => false,
+        'cookies' => request()->cookies->all(),
+    ]);
+})->name('debug.remember');
+
 // Protected routes
 Route::middleware('auth')->group(function () {
     // Dashboard routes
