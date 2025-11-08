@@ -20,19 +20,14 @@
             <Link href="/add-new" class="lists"><i class="fas fa-plus"></i>Add new</Link>
           </div>
         </div>
-        <div class="cta-button-dashboard">
-          <i class="fas fa-plus not-circle"></i>
-          <h1 class="cta-button-dashboard-head">Add new</h1>
-          <p class="cta-text">Add new student info</p>
-          <Link href="/add-new" class="button-1">Click here</Link>
-        </div>
+        <AddNewCTA />
       </div>
     </Transition>
 
     <div class="inner-container second-column" :class="{ 'content-shifted': isSidebarOpen, 'content-full': !isSidebarOpen }">
       <div class="page-info flex items-center">
-        <button @click="toggleSidebar" class="p-2 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <button @click="toggleSidebar" class="hamburger-button">
+          <svg class="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
@@ -67,7 +62,10 @@
       <div class="add-student-info">
         <form @submit.prevent="submitForm">
           <h2>Student Information</h2>
-          <div class="form-grid">
+          
+          <!-- Personal Information Section -->
+          <h3 class="section-title">Personal Information</h3>
+          <div class="form-row-3">
             <div class="form-group">
               <label>First Name</label>
               <input v-model="form.first_name" type="text" required />
@@ -83,41 +81,30 @@
               <input v-model="form.last_name" type="text" required />
               <div v-if="errors.last_name" class="error">{{ errors.last_name }}</div>
             </div>
+          </div>
+
+          <div class="form-row-2">
             <div class="form-group">
               <label>Student ID</label>
-              <input v-model="form.student_id" type="text" required />
+              <input 
+                v-model="form.student_id" 
+                type="text" 
+                pattern="\d{4}-\d{5}"
+                placeholder="2023-01292"
+                title="Format: YYYY-##### (e.g., 2023-01292)"
+                required 
+              />
+              <p class="input-helper-text">Format: YYYY-##### (e.g., 2023-01292)</p>
               <div v-if="errors.student_id" class="error">{{ errors.student_id }}</div>
-            </div>
-            <div class="form-group">
-              <label>Address</label>
-              <input v-model="form.address" type="text" required />
-              <div v-if="errors.address" class="error">{{ errors.address }}</div>
-            </div>
-            <div class="form-group">
-              <label>Barangay</label>
-              <input v-model="form.barangay" type="text" required />
-              <div v-if="errors.barangay" class="error">{{ errors.barangay }}</div>
-            </div>
-            <div class="form-group">
-              <label>City</label>
-              <input v-model="form.city" type="text" required />
-              <div v-if="errors.city" class="error">{{ errors.city }}</div>
-            </div>
-            <div class="form-group">
-              <label>Province</label>
-              <input v-model="form.province" type="text" required />
-              <div v-if="errors.province" class="error">{{ errors.province }}</div>
-            </div>
-            <div class="form-group">
-              <label>Postal Code</label>
-              <input v-model="form.postal_code" type="text" required />
-              <div v-if="errors.postal_code" class="error">{{ errors.postal_code }}</div>
             </div>
             <div class="form-group">
               <label>Birth Date</label>
               <input v-model="form.birth_date" type="date" required />
               <div v-if="errors.birth_date" class="error">{{ errors.birth_date }}</div>
             </div>
+          </div>
+
+          <div class="form-row-2">
             <div class="form-group">
               <label>Gender</label>
               <select v-model="form.gender" required>
@@ -129,23 +116,6 @@
               <div v-if="errors.gender" class="error">{{ errors.gender }}</div>
             </div>
             <div class="form-group">
-              <label>Course</label>
-              <input v-model="form.course" type="text" required />
-              <div v-if="errors.course" class="error">{{ errors.course }}</div>
-            </div>
-            <div class="form-group">
-              <label>Year Level</label>
-              <select v-model="form.year_level" required>
-                <option value="">Select Year Level</option>
-                <option value="1st Year">1st Year</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year">3rd Year</option>
-                <option value="4th Year">4th Year</option>
-                <option value="Others">Others</option>
-              </select>
-              <div v-if="errors.year_level" class="error">{{ errors.year_level }}</div>
-            </div>
-            <div class="form-group">
               <label>Marital Status</label>
               <select v-model="form.marital_status" required>
                 <option value="">Select Marital Status</option>
@@ -154,6 +124,9 @@
               </select>
               <div v-if="errors.marital_status" class="error">{{ errors.marital_status }}</div>
             </div>
+          </div>
+
+          <div class="form-row-2">
             <div class="form-group">
               <label>Religion</label>
               <input v-model="form.religion" type="text" required />
@@ -164,6 +137,61 @@
               <input v-model="form.cellphone_number" type="tel" required />
               <div v-if="errors.cellphone_number" class="error">{{ errors.cellphone_number }}</div>
             </div>
+          </div>
+
+          <!-- Academic Information Section -->
+          <h3 class="section-title">Academic Information</h3>
+          <div class="form-group">
+            <label>Course</label>
+            <input v-model="form.course" type="text" required />
+            <div v-if="errors.course" class="error">{{ errors.course }}</div>
+          </div>
+          <div class="form-group">
+            <label>Year Level</label>
+            <select v-model="form.year_level" required>
+              <option value="">Select Year Level</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+              <option value="Others">Others</option>
+            </select>
+            <div v-if="errors.year_level" class="error">{{ errors.year_level }}</div>
+          </div>
+
+          <!-- Address Section -->
+          <h3 class="section-title">Address</h3>
+          <div class="form-group">
+            <label>Address (House No./Street)</label>
+            <input v-model="form.address" type="text" required />
+            <div v-if="errors.address" class="error">{{ errors.address }}</div>
+          </div>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Barangay</label>
+              <input v-model="form.barangay" type="text" required />
+              <div v-if="errors.barangay" class="error">{{ errors.barangay }}</div>
+            </div>
+            <div class="form-group">
+              <label>City/Municipality</label>
+              <input v-model="form.city" type="text" required />
+              <div v-if="errors.city" class="error">{{ errors.city }}</div>
+            </div>
+            <div class="form-group">
+              <label>Province</label>
+              <input v-model="form.province" type="text" required />
+              <div v-if="errors.province" class="error">{{ errors.province }}</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Postal Code</label>
+            <input v-model="form.postal_code" type="text" required />
+            <div v-if="errors.postal_code" class="error">{{ errors.postal_code }}</div>
+          </div>
+
+          <!-- Parent Information Section -->
+          <h3 class="section-title">Parent Information</h3>
+          <div class="form-row-3">
             <div class="form-group">
               <label>Father's Name</label>
               <input v-model="form.father_name" type="text" required />
@@ -197,8 +225,13 @@
               </select>
               <div v-if="errors.family_income" class="error">{{ errors.family_income }}</div>
             </div>
+          </div>
+
+          <!-- Socio-Economic Information Section -->
+          <h3 class="section-title">Socio-Economic Information</h3>
+          <div class="form-row-2">
             <div class="form-group">
-              <label>Study Device</label>
+              <label>Primary Study Device</label>
               <select v-model="form.study_device" required>
                 <option value="">Select Study Device</option>
                 <option value="Laptop">Laptop</option>
@@ -209,81 +242,13 @@
               <div v-if="errors.study_device" class="error">{{ errors.study_device }}</div>
             </div>
             <div class="form-group">
-              <label>Solo Parent</label>
-              <div class="custom-control custom-switch">
-                <input type="checkbox" v-model="form.is_solo_parent" class="custom-control-input" id="soloParent">
-                <label class="custom-control-label" for="soloParent">Yes</label>
-              </div>
-              <input v-if="form.is_solo_parent" v-model="form.solo_parent_id" type="text" placeholder="Solo Parent ID No." />
-              <div v-if="errors.is_solo_parent" class="error">{{ errors.is_solo_parent }}</div>
-              <div v-if="errors.solo_parent_id" class="error">{{ errors.solo_parent_id }}</div>
-            </div>
-            <div class="form-group">
-              <label>Part-time Job</label>
-              <div class="custom-control custom-switch">
-                <input type="checkbox" v-model="form.has_part_time_job" class="custom-control-input" id="partTimeJob">
-                <label class="custom-control-label" for="partTimeJob">Yes</label>
-              </div>
-              <div v-if="errors.has_part_time_job" class="error">{{ errors.has_part_time_job }}</div>
-            </div>
-            <div class="form-group">
-              <label>Daily Transportation Fare</label>
-              <select v-model="form.daily_fare">
-                <option value="">Select Daily Fare</option>
-                <option value="Php 20.00 - Php 50.00">Php 20.00 - Php 50.00</option>
-                <option value="Php. 51.00 - Php 100.00">Php. 51.00 - Php 100.00</option>
-                <option value="Php 101.00 - Php 200.00">Php 101.00 - Php 200.00</option>
-                <option value="Php 201.00 - Php 300.00">Php 201.00 - Php 300.00</option>
-                <option value="N/A">N/A</option>
-              </select>
-              <div v-if="errors.daily_fare" class="error">{{ errors.daily_fare }}</div>
-            </div>
-            <div class="form-group">
-              <label>Monthly Rental Cost (if renting)</label>
-              <input v-model="form.monthly_rental" type="number" min="0" step="0.01" />
-              <div v-if="errors.monthly_rental" class="error">{{ errors.monthly_rental }}</div>
-            </div>
-            <div class="form-group">
               <label>Household Size</label>
               <input v-model="form.household_size" type="number" min="1" required />
               <div v-if="errors.household_size" class="error">{{ errors.household_size }}</div>
             </div>
-            <div class="form-group">
-              <label>Transportation Mode</label>
-              <select v-model="form.transportation_mode" required>
-                <option value="">Select Transportation</option>
-                <option value="Car">Car</option>
-                <option value="Jeep/Multicab">Jeep/Multicab</option>
-                <option value="Motorcycle">Motorcycle</option>
-                <option value="Tricycle">Tricycle</option>
-                <option value="None">None</option>
-              </select>
-              <div v-if="errors.transportation_mode" class="error">{{ errors.transportation_mode }}</div>
-            </div>
-            <div class="form-group">
-              <label>Travel Time (minutes)</label>
-              <input v-model="form.travel_time_minutes" type="number" min="0" required />
-              <div v-if="errors.travel_time_minutes" class="error">{{ errors.travel_time_minutes }}</div>
-            </div>
-            <div class="form-group">
-              <label>Ethnicity</label>
-              <select v-model="form.ethnicity" required>
-                <option value="">Select Ethnicity</option>
-                <option value="Indigenous">Indigenous</option>
-                <option value="Non-Indigenous">Non-Indigenous</option>
-              </select>
-              <div v-if="errors.ethnicity" class="error">{{ errors.ethnicity }}</div>
-            </div>
-            <div class="form-group">
-              <label>Person with Disability (PWD)</label>
-              <div class="custom-control custom-switch">
-                <input type="checkbox" v-model="form.pwd" class="custom-control-input" id="pwd">
-                <label class="custom-control-label" for="pwd">Yes</label>
-              </div>
-              <input v-if="form.pwd" v-model="form.pwd_id" type="text" placeholder="PWD ID No." />
-              <div v-if="errors.pwd" class="error">{{ errors.pwd }}</div>
-              <div v-if="errors.pwd_id" class="error">{{ errors.pwd_id }}</div>
-            </div>
+          </div>
+
+          <div class="form-row-2">
             <div class="form-group">
               <label>Housing Status</label>
               <select v-model="form.housing_status" required>
@@ -296,6 +261,98 @@
               <div v-if="errors.housing_status" class="error">{{ errors.housing_status }}</div>
             </div>
           </div>
+
+          <!-- Status Checkboxes Section -->
+          <div class="checkbox-section">
+            <!-- Solo Parent Row -->
+            <div class="checkbox-row-with-input">
+              <div class="checkbox-wrapper">
+                <input type="checkbox" v-model="form.is_solo_parent" class="checkbox-input" id="soloParent">
+                <label class="checkbox-text" for="soloParent">Are you a solo parent?</label>
+                <div v-if="errors.is_solo_parent" class="error">{{ errors.is_solo_parent }}</div>
+              </div>
+              <div v-if="form.is_solo_parent" class="conditional-input">
+                <label for="solo_parent_id">Solo Parent ID No.</label>
+                <input v-model="form.solo_parent_id" type="text" placeholder="Solo Parent ID No." />
+                <div v-if="errors.solo_parent_id" class="error">{{ errors.solo_parent_id }}</div>
+              </div>
+            </div>
+            
+            <!-- Part-Time Job Row -->
+            <div class="checkbox-row-with-input">
+              <div class="checkbox-wrapper">
+                <input type="checkbox" v-model="form.has_part_time_job" class="checkbox-input" id="partTimeJob">
+                <label class="checkbox-text" for="partTimeJob">Do you have a part-time job?</label>
+                <div v-if="errors.has_part_time_job" class="error">{{ errors.has_part_time_job }}</div>
+              </div>
+            </div>
+            
+            <!-- PWD Row -->
+            <div class="checkbox-row-with-input">
+              <div class="checkbox-wrapper">
+                <input type="checkbox" v-model="form.pwd" class="checkbox-input" id="pwd">
+                <label class="checkbox-text" for="pwd">Are you a Person with Disability (PWD)?</label>
+                <div v-if="errors.pwd" class="error">{{ errors.pwd }}</div>
+              </div>
+              <div v-if="form.pwd" class="conditional-input">
+                <label for="pwd_id">PWD ID Number</label>
+                <input v-model="form.pwd_id" type="text" placeholder="PWD ID No." />
+                <div v-if="errors.pwd_id" class="error">{{ errors.pwd_id }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>Daily Fare (PHP)</label>
+              <select v-model="form.daily_fare">
+                <option value="">Select Daily Fare</option>
+                <option value="Php 20.00 - Php 50.00">Php 20.00 - Php 50.00</option>
+                <option value="Php. 51.00 - Php 100.00">Php. 51.00 - Php 100.00</option>
+                <option value="Php 101.00 - Php 200.00">Php 101.00 - Php 200.00</option>
+                <option value="Php 201.00 - Php 300.00">Php 201.00 - Php 300.00</option>
+                <option value="N/A">N/A</option>
+              </select>
+              <div v-if="errors.daily_fare" class="error">{{ errors.daily_fare }}</div>
+            </div>
+            <div class="form-group">
+              <label>Monthly Boarding/Rental (PHP, if applicable)</label>
+              <input v-model="form.monthly_rental" type="number" min="0" step="0.01" placeholder="e.g., 2500" />
+              <div v-if="errors.monthly_rental" class="error">{{ errors.monthly_rental }}</div>
+            </div>
+          </div>
+
+          <!-- Transportation & Ethnicity Section -->
+          <h3 class="section-title">Transportation & Ethnicity</h3>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Mode of Transportation to School</label>
+              <select v-model="form.transportation_mode" required>
+                <option value="">Select Transportation</option>
+                <option value="Car">Car</option>
+                <option value="Jeep/Multicab">Jeep/Multicab</option>
+                <option value="Motorcycle">Motorcycle</option>
+                <option value="Tricycle">Tricycle</option>
+                <option value="None">None</option>
+              </select>
+              <div v-if="errors.transportation_mode" class="error">{{ errors.transportation_mode }}</div>
+            </div>
+            <div class="form-group">
+              <label>Travel Time to School (minutes)</label>
+              <input v-model="form.travel_time_minutes" type="number" min="0" placeholder="e.g., 30" required />
+              <div v-if="errors.travel_time_minutes" class="error">{{ errors.travel_time_minutes }}</div>
+            </div>
+            <div class="form-group">
+              <label>Ethnicity</label>
+              <select v-model="form.ethnicity" required>
+                <option value="">Select Ethnicity</option>
+                <option value="Indigenous">Indigenous</option>
+                <option value="Non-Indigenous">Non-Indigenous</option>
+              </select>
+              <div v-if="errors.ethnicity" class="error">{{ errors.ethnicity }}</div>
+            </div>
+          </div>
+
           <div class="button-container">
             <button type="submit" class="button-add" :disabled="processing">
               {{ processing ? 'Submitting...' : 'Submit' }}
@@ -311,6 +368,7 @@
 import { Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
+import AddNewCTA from '@/Components/AddNewCTA.vue';
 
 // Sidebar toggle state and function
 const isSidebarOpen = ref(true);
@@ -461,6 +519,56 @@ body {
     font-size: 32px;
     font-weight: 400;
 }
+/* ===== ENHANCED HAMBURGER BUTTON ===== */
+.hamburger-button {
+    padding: 0.625rem;
+    margin-right: 1rem;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Layered shadows for depth */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.hamburger-button:hover {
+    background: linear-gradient(to bottom, #f8f8f8 0%, #f0f0f0 100%);
+    border-color: #235F23;
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 4px 8px rgba(0, 0, 0, 0.1),
+        0 0 0 2px rgba(35, 95, 35, 0.1);
+    transform: translateY(-1px);
+}
+
+.hamburger-button:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.7) inset,
+        0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger-button:focus {
+    outline: none;
+}
+
+.hamburger-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #4a5568;
+    transition: color 0.2s ease;
+}
+
+.hamburger-button:hover .hamburger-icon {
+    color: #235F23;
+}
+
 .page-info {
     justify-content: space-between;
     align-items: center;
@@ -643,10 +751,17 @@ h1 {
     display: flex;  
     justify-content: flex-start;
 }
+/* ===== ENHANCED FORM CONTAINER WITH DEPTH ===== */
 .add-student-info {
-    padding: 28px 32px;
-    box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
+    padding: 32px 36px;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%);
+    /* Layered shadow for depth - light glow on top, dark shadow at bottom */
+    box-shadow: 
+      0 1px 3px rgba(255, 255, 255, 0.9) inset,
+      0 6px 12px rgba(0, 0, 0, 0.08),
+      0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    transition: all 0.3s ease;
 }
 .location-headline {
     font-size: 18px;
@@ -657,40 +772,7 @@ h1 {
 .headline-overview-location {
     padding-bottom: 28px;
 }
-.cta-button-dashboard {
-    padding: 16px;
-    background-color: #235F23;
-    border-radius: 15px;
-    margin-top: 85px;
-
-}
-.button-1 {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    border: none;
-    padding: 4.68px 40.5px;
-    border-radius: 12px;
-}
-.cta-button-dashboard-head {
-    font-size: 14px;
-    font-weight: 700;
-    color: #ffffff;
-
-}
-.cta-text {
-    font-size: 12px;
-    font-weight: 400;
-    color: #ffffff;
-}
-.cta-button-dashboard .fas.fa-plus {
-    border-radius: 12px;
-    font-size: 24px;
-    margin-bottom: 21px;
-    color: #235F23;
-    background-color: #ffffff;
-    padding: 12px;
-}
+/* CTA button styles moved to AddNewCTA.vue component */
 h2 {
     margin-bottom: 15px;
     font-size: 18px;
@@ -705,6 +787,7 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* ===== ENHANCED FORM INPUTS WITH DEPTH ===== */
 .row input[type="text"],
 .row input[type="number"],
 .row input[type="tel"],
@@ -712,12 +795,41 @@ select {
     flex: 1;
     margin-right: 10px;
     margin-bottom: 10px;
-    padding: 19px;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2D3748;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    transition: all 0.2s ease;
+    /* Subtle inset shadow for depth */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.row input[type="text"]:focus,
+.row input[type="number"]:focus,
+.row input[type="tel"]:focus,
+select:focus {
+    outline: none;
+    border-color: #235F23;
+    background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
+    /* Glowing effect on focus */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 0 0 3px rgba(35, 95, 35, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+}
+
+.row input[type="text"]:hover,
+.row input[type="number"]:hover,
+.row input[type="tel"]:hover,
+select:hover {
+    border-color: #cbd5e0;
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
 }
 
 .row input[type="text"]:last-child,
@@ -730,30 +842,55 @@ select:last-child {
 label {
     margin-right: 15px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     font-weight: 700;
     font-size: 12px;
     text-transform: uppercase;
+    min-height: 2.5rem; /* Ensure consistent label height for alignment */
+    line-height: 1.25rem;
 }
 
 input[type="radio"] {
     margin-right: 5px;
 }
 
+/* ===== ENHANCED SUBMIT BUTTON WITH PROMINENCE ===== */
 .button-add {
     text-align: center;
-    padding: 17px 52px;
-    background-color: #235F23;
+    padding: 16px 52px;
+    background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 12px;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.2s ease;
     display: inline-block;
-    border-radius: 15px;
+    /* Small shadow for depth */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.2) inset,
+      0 4px 8px rgba(35, 95, 35, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button-add:hover {
+    background: linear-gradient(to bottom, #3a9a3a 0%, #2d7d2d 100%);
+    /* Bigger shadow on hover for prominence */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.3) inset,
+      0 6px 12px rgba(35, 95, 35, 0.4),
+      0 3px 6px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.button-add:active {
+    transform: translateY(0);
+    /* Inset shadow to appear pressed */
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.2) inset,
+      0 1px 2px rgba(0, 0, 0, 0.1);
 }
 .button-container {
     display: flex;
@@ -769,6 +906,8 @@ input[type="radio"] {
     font-size: 15px;
     cursor: pointer;
 }
+
+/* ===== ENHANCED SETTINGS MODAL (Admin Profile) ===== */
 .modal {
     display: flex;
     position: fixed;
@@ -781,6 +920,7 @@ input[type="radio"] {
     justify-content: center;
     align-items: center;
 }
+
 .modal-content {
     background-color: white;
     border-radius: 15px;
@@ -790,69 +930,289 @@ input[type="radio"] {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
 }
+
 .close {
     position: absolute;
     top: 10px;
     right: 15px;
     font-size: 24px;
     cursor: pointer;
+    color: #4A5568;
 }
-.profile-picture .avatar {
-    font-size: 50px;
-    color: #006400;
-    margin-bottom: 10px;
+
+.close:hover {
+    color: #2D3748;
 }
-h2 {
-    font-size: 18px;
-}
-p {
-    font-size: 16px;
-    color: black;
+
+.profile-picture {
     margin-bottom: 15px;
-    font-weight: bold;
 }
-.sign-out {
-    color: red;
-    text-decoration: none;
+
+.profile-picture .avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #2d7d2d 0%, #235F23 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    box-shadow: 
+        0 4px 12px rgba(35, 95, 35, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture .avatar i {
+    font-size: 40px;
+    color: #ffffff;
+}
+
+.modal-content h2 {
     font-size: 18px;
+    margin-bottom: 10px;
+    color: #2D3748;
+    font-weight: 600;
+}
+
+.modal-content p {
+    font-size: 14px;
+    color: #4A5568;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.sign-out {
+    color: #e53e3e;
+    text-decoration: none;
+    font-size: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 8px 24px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }
 
 .sign-out:hover {
-    text-decoration: underline;
+    background-color: #fff5f5;
+    text-decoration: none;
 }
 
-.form-grid {
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D3748;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+.form-row-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+}
+
+.form-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 16px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
+    margin-bottom: 16px;
 }
 
 .form-group label {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     color: #2D3748;
     font-weight: 500;
+    font-size: 13px;
+    min-height: 2.5rem; /* Ensure consistent label height for alignment */
+    line-height: 1.25rem;
+    display: flex;
+    align-items: flex-start;
 }
 
 .form-group input,
 .form-group select {
-    padding: 8px;
+    padding: 10px 12px;
     border: 1px solid #E2E8F0;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 14px;
     width: 100%;
     box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #235F23;
+}
+
+/* ===== ENHANCED CHECKBOX SECTIONS ===== */
+.checkbox-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
+    border-radius: 8px;
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+    padding: 1.5rem;
+    /* Subtle shadow for depth */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.5) inset,
+        0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* ===== ENHANCED CHECKBOX ROWS WITH INLINE INPUTS ===== */
+.checkbox-row-with-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    align-items: start; /* Align both items to top */
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    /* Subtle shadow for depth */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.checkbox-wrapper:hover {
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 3px 6px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+}
+
+.conditional-input {
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease-out;
+}
+
+.conditional-input label {
+    margin-bottom: 0.5rem;
+    min-height: auto !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.conditional-input input {
+    /* Input inherits styles from form-group input */
+    width: 100%;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.checkbox-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4a5568;
+    cursor: pointer;
+    margin: 0;
+    margin-left: 0.75rem;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.checkbox-text:hover {
+    color: #235F23;
+}
+
+.checkbox-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #cbd5e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    flex-shrink: 0;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    position: relative;
+    /* Subtle inset shadow */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.checkbox-input:hover {
+    border-color: #a0aec0;
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+}
+
+.checkbox-input:checked {
+    background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%);
+    border-color: #235F23;
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 2px 4px rgba(35, 95, 35, 0.3);
+}
+
+/* Checkmark using ::after pseudo-element */
+.checkbox-input:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.75rem;
+    height: 0.75rem;
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="20 6 9 17 4 12"%3E%3C/polyline%3E%3C/svg%3E');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.checkbox-input:focus {
+    outline: none;
+    border-color: #235F23;
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 0 0 3px rgba(35, 95, 35, 0.1);
 }
 
 .error {
     color: #e53e3e;
     font-size: 12px;
     margin-top: 2px;
+}
+
+/* ===== INPUT HELPER TEXT ===== */
+.input-helper-text {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.25rem;
+    font-style: italic;
 }
 
 .button-add {
@@ -875,10 +1235,22 @@ p {
     margin-top: 20px;
 }
 
-/* Responsive Form Grid */
+/* Responsive Form Grids */
 @media (max-width: 768px) {
-  .form-grid {
+  .form-row-2,
+  .form-row-3 {
     grid-template-columns: 1fr;
+  }
+  
+  .checkbox-row-with-input {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .section-title {
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 12px;
   }
 }
 
@@ -918,18 +1290,22 @@ p {
   }
 }
 
-/* Transition styles */
+/* ===== IMPROVED SIDEBAR TRANSITION ===== */
 .slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth ease-in-out */
 }
 
 .slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); /* Slightly faster leave */
 }
 
-.slide-fade-enter-from,
+.slide-fade-enter-from {
+  transform: translateX(-300px); /* Slide in from left */
+  opacity: 0;
+}
+
 .slide-fade-leave-to {
-  transform: translateX(-280px); /* Slide out to the left, matches desktop sidebar width */
+  transform: translateX(-300px); /* Slide out to left */
   opacity: 0;
 }
 
@@ -937,11 +1313,14 @@ p {
 .content-full {
   width: 100%;
   margin-left: 0; /* Ensures it takes full width when sidebar is gone */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth expansion */
 }
+
 .content-shifted {
   /* Flexbox handles the width adjustment of the second column when the first column is present.
      No explicit margin or width needed here if .container-1 is display:flex 
      and .first-column has a fixed width and .second-column has flex-grow:1. */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition */
 }
 
 /* General Font Awesome Styles - Crucial for rendering */

@@ -98,7 +98,7 @@ class StudentController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'student_id' => 'required|string|unique:students',
+            'student_id' => 'required|string|regex:/^\d{4}-\d{5}$/|unique:students',
             'course' => 'required|string|max:255',
             'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year,Others',
             'gender' => 'required|in:Male,Female,Other',
@@ -137,13 +137,14 @@ class StudentController extends Controller
         return redirect()->route('thank-you');
     }
 
-    public function edit($id)
-    {
-        $student = Student::findOrFail($id);
-        return Inertia::render('EditStudent', [
-            'student' => $student
-        ]);
-    }
+    // Edit method removed - editing now handled by modal in StudentList
+    // public function edit($id)
+    // {
+    //     $student = Student::findOrFail($id);
+    //     return Inertia::render('EditStudent', [
+    //         'student' => $student
+    //     ]);
+    // }
 
     public function update(Request $request, $id)
     {
@@ -153,7 +154,7 @@ class StudentController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'student_id' => 'required|string|unique:students,student_id,' . $student->id,
+            'student_id' => 'required|string|regex:/^\d{4}-\d{5}$/|unique:students,student_id,' . $student->id,
             'course' => 'required|string|max:255',
             'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year,Others',
             'gender' => 'required|in:Male,Female,Other',
@@ -302,6 +303,7 @@ class StudentController extends Controller
                 'Gender',
                 'Marital Status',
                 'Religion',
+                'Ethnicity',
                 'Family Income',
                 'Study Device'
             ]);
@@ -317,6 +319,7 @@ class StudentController extends Controller
                     $student->gender,
                     $student->marital_status,
                     $student->religion,
+                    $student->ethnicity ?? 'N/A',
                     $student->family_income ?? 'N/A',
                     $student->study_device ?? 'N/A'
                 ]);

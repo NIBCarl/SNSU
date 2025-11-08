@@ -155,16 +155,46 @@ body {
   margin-bottom: 30px;
 }
 
+/* ===== ENHANCED LOGIN INPUT FIELDS WITH DEPTH ===== */
 .input-field {
   font-family: 'Poppins';
   width: 100%;
-  padding: 15.25px 0px 15.25px 20px;
+  padding: 14px 20px;
   margin-bottom: 20px;
-  border-radius: 15px;
+  border-radius: 12px;
   border: 1px solid #E2E8F0;
   font-size: 14px;
-  color: #A0AEC0;
-  margin-top: 6px;
+  color: #2D3748;
+  margin-top: 8px;
+  background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  /* Subtle inset shadow for depth */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.input-field::placeholder {
+  color: #a0aec0;
+}
+
+.input-field:hover {
+  border-color: #cbd5e0;
+  background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #235F23;
+  background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
+  color: #2D3748;
+  /* Glowing effect on focus */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 0 0 3px rgba(35, 95, 35, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
 }
 
 .options {
@@ -188,21 +218,51 @@ body {
   text-decoration: underline;
 }
 
+/* ===== ENHANCED LOGIN BUTTON WITH PROMINENCE ===== */
 .button {
   font-family: 'Poppins';
   width: 100%;
-  padding: 15px;
-  background-color: #235f23;
+  padding: 16px;
+  background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%);
   color: white;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  /* Small shadow for depth */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 4px 8px rgba(35, 95, 35, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.button:hover {
-  background-color: #1e501d;
+.button:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #3a9a3a 0%, #2d7d2d 100%);
+  /* Bigger shadow on hover for prominence */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.3) inset,
+    0 6px 12px rgba(35, 95, 35, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+  /* Inset shadow to appear pressed */
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2) inset,
+    0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.button:disabled {
+  background: linear-gradient(to bottom, #cbd5e0 0%, #a0aec0 100%);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 .switch {
   position: relative;
@@ -272,19 +332,32 @@ input:checked + .slider:before {
   z-index: 1000;
 }
 
+/* ===== ENHANCED REGISTRATION LINK WITH DEPTH ===== */
 .registration-link {
   color: #235f23;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: 2px solid #235f23;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+  /* Small shadow for depth */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .registration-link:hover {
-  background-color: #235f23;
+  background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%);
   color: white;
+  border-color: #235f23;
+  /* Bigger shadow on hover */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 4px 8px rgba(35, 95, 35, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 </style>

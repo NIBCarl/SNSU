@@ -18,19 +18,14 @@
             <Link href="/add-new" class="dashboard"><i class="fas fa-plus"></i>Add new</Link>
           </div>
         </div>
-        <div class="cta-button-dashboard">
-          <i class="fas fa-plus not-circle"></i>
-          <h1 class="cta-button-dashboard-head">Add new</h1>
-          <p class="cta-text">Add new student info</p>
-          <Link href="/add-new" class="button-1">Click here</Link>
-        </div>
+        <AddNewCTA />
       </div>
     </Transition>
     <div class="inner-container second-column" :class="{ 'content-shifted': isSidebarOpen, 'content-full': !isSidebarOpen }">
       <div class="page-info flex items-center">
         <!-- Hamburger Icon -->
-        <button @click="toggleSidebar" class="p-2 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <button @click="toggleSidebar" class="hamburger-button">
+          <svg class="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
@@ -57,6 +52,7 @@
           </ul>
         </div>
       </div>
+      <!-- Stats Cards -->
       <div class="dashboard-stats">
         <div class="stats-grid">
           <div class="stat-card">
@@ -96,7 +92,25 @@
             </div>
           </div>
         </div>
-        <div class="charts-grid">
+      </div>
+
+      <!-- Dashboard Info & Charts Section -->
+      <div class="dashboard-content-row">
+        <div class="dashboard-text-inner">
+          <div class="overlap-group-2">
+            <div class="text-wrapper-2">Dashboard</div>
+            <p class="p">
+              The SNSU Student Insights project is focused on developing a secure and exclusive system
+              for the Student Affairs Office staff to collect, analyze, and manage critical demographic
+              data of students. This system will ensure student privacy and data security, making sure
+              only authorized staff have access to sensitive information.
+            </p>
+          </div>
+          <div class="image-dashboard">
+            <img class="img-dashboard-first" src="/assets/logo.png" />
+          </div>
+        </div>
+        <div class="charts-column">
           <div class="chart-container">
             <h3>Student Demographics</h3>
             <div style="position: relative; height: 300px;">
@@ -111,35 +125,6 @@
           </div>
         </div>
       </div>
-      <div class="dashboard-text">
-        <div class="dashboard-text-inner">
-          <div class="overlap-group-2">
-            <div class="text-wrapper-2">Dashboard</div>
-            <p class="p">
-              The SNSU Student Insights project is focused on developing a secure and exclusive system
-              for the Student Affairs Office staff to collect, analyze, and manage critical demographic
-              data of students. This system will ensure student privacy and data security, making sure
-              only authorized staff have access to sensitive information.
-            </p>
-            <button class="button" @click="toggleModal"><div class="text-3">Read more</div></button>
-          </div>
-          <div class="image-dashboard">
-            <img class="img-dashboard-first" src="/assets/logo.png" />
-          </div>
-        </div>
-        <div class="dashboard-text-inner-2">
-          <div class="overlap-group-3">
-            <div class="text-wrapper-2-socio">Socio Demographic</div>
-            <div class="text-wrapper-2-2">{{ totals.totalStudents }}</div>
-            <p class="p-1">Total Students</p>
-          </div>
-          <div class="charlang">
-            <div class="chart">
-              <canvas id="doughnut"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="overview-location">
         <div class="headline-overview-location">
           <h1 class="location-headline">Location</h1>
@@ -149,7 +134,9 @@
           <div class="title-description-over row">
             <div class="loc-1 col">Location</div>
             <div class="loc-1 col">Total</div>
-            <div class="loc-1 col">Income/Year</div>
+            <div class="loc-1 col">Indigenous</div>
+            <div class="loc-1 col">PWD</div>
+            <div class="loc-1 col">Income/monthly</div>
             <div class="loc-1 col">Percentage</div>
           </div>
           <hr>
@@ -157,7 +144,9 @@
             <div class="title-description-over row">
               <div class="loc-3 col">{{ location.name }}</div>
               <div class="loc-3 col">{{ location.total }}</div>
-              <div class="loc-3 col">{{ location.income }}</div>
+              <div class="loc-3 col">{{ location.indigenous }}</div>
+              <div class="loc-3 col">{{ location.pwd }}</div>
+              <div class="loc-3 col">₱{{ location.income }}</div>
               <div class="loc-4 col">{{ location.percentage }}%</div>
             </div>
             <hr>
@@ -173,6 +162,7 @@ import { Link, router } from '@inertiajs/vue3';
 import { ref, onMounted, watch, onUnmounted, nextTick } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Chart from 'chart.js/auto';
+import AddNewCTA from '@/Components/AddNewCTA.vue';
 
 const isSidebarOpen = ref(true); // Default: sidebar is open
 
@@ -395,12 +385,16 @@ onMounted(() => {
   flex-shrink: 0;
   width: 280px;
   padding: 1rem;
+  background-color: white; /* Added for consistency with AddNew page */
+  border-radius: 15px; /* Added for card-like appearance matching AddNew */
 }
 
 .second-column {
   flex-grow: 1;
   padding: 1rem;
   overflow-x: auto;
+  background-color: white; /* Added for consistency with AddNew page */
+  border-radius: 15px; /* Added for card-like appearance matching AddNew */
 }
 
 @media (max-width: 768px) {
@@ -462,6 +456,56 @@ onMounted(() => {
   font-size: 32px;
   font-weight: 400;
 }
+/* ===== ENHANCED HAMBURGER BUTTON ===== */
+.hamburger-button {
+  padding: 0.625rem;
+  margin-right: 1rem;
+  background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Layered shadows for depth */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.hamburger-button:hover {
+  background: linear-gradient(to bottom, #f8f8f8 0%, #f0f0f0 100%);
+  border-color: #235F23;
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(35, 95, 35, 0.1);
+  transform: translateY(-1px);
+}
+
+.hamburger-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger-button:focus {
+  outline: none;
+}
+
+.hamburger-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #4a5568;
+  transition: color 0.2s ease;
+}
+
+.hamburger-button:hover .hamburger-icon {
+  color: #235F23;
+}
+
 .page-info {
   justify-content: space-between;
   align-items: center;
@@ -552,18 +596,41 @@ h1 {
   margin-top: 24px;
   margin-bottom: 24px;
 }
-.dashboard-text {
+.dashboard-content-row {
   display: flex;
-  column-gap: 20px;
+  gap: 20px;
   margin-top: 24px;
+  margin-bottom: 24px;
+  align-items: flex-start;
 }
-.dashboard-text-inner, .dashboard-text-inner-2 {
+.dashboard-text-inner {
+  flex: 1;
   display: flex;
-  padding: 21px;
-  box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
+  padding: 24px;
+  background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%);
+  /* Layered shadow for depth */
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.9) inset,
+    0 6px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 15px;
   column-gap: 50px;
-  
+  min-width: 0;
+  transition: all 0.3s ease;
+}
+
+.dashboard-text-inner:hover {
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.95) inset,
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 3px 6px rgba(0, 0, 0, 0.06);
+}
+.charts-column {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  min-width: 0;
 }
 .img-dashboard-first {
   object-fit: contain;
@@ -591,37 +658,29 @@ h1 {
 .overlap-group-2 {
   width: 502px;
 }
-.charlang {
-  align-items: center;
-  justify-content: center;
-}
-.text-wrapper-2-2 {
-  font-size: 32px;
-  font-weight: 500;
-  color: #235F23;
-}
-.p-1 {
-  color: #000000;
-  font-size: 16px;
-
-}
-.dashboard-text-inner-2 {
-  width: 804px;
-}
-.text-wrapper-2-socio {
-  font-size: 16px;
-  font-weight: 500;
-}
 .title-description-over {
   display: flex;  
   justify-content: flex-start;
 }
+/* ===== ENHANCED LOCATION OVERVIEW WITH DEPTH ===== */
 .overview-location {
   padding: 28px 32px;
-  box-shadow: 0 3.5px 5.5px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-  margin-top: 20px;
+  background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%);
+  /* Layered shadow for depth */
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.9) inset,
+    0 6px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 15px;
+  margin-top: 24px;
+  transition: all 0.3s ease;
+}
 
+.overview-location:hover {
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.95) inset,
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 3px 6px rgba(0, 0, 0, 0.06);
 }
 .loc-1 {
   font-size: 10px;
@@ -651,40 +710,7 @@ h1 {
 .headline-overview-location {
   padding-bottom: 28px;
 }
-.cta-button-dashboard {
-  padding: 16px;
-  background-color: #235F23;
-  border-radius: 15px;
-  margin-top: 85px;
-
-}
-.button-1 {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  border: none;
-  padding: 4.68px 40.5px;
-  border-radius: 12px;
-}
-.cta-button-dashboard-head {
-  font-size: 14px;
-  font-weight: 700;
-  color: #ffffff;
-
-}
-.cta-text {
-  font-size: 12px;
-  font-weight: 400;
-  color: #ffffff;
-}
-.cta-button-dashboard .fas.fa-plus {
-  border-radius: 12px;
-  font-size: 24px;
-  margin-bottom: 21px;
-  color: #235F23;
-  background-color: #ffffff;
-  padding: 12px;
-}
+/* CTA button styles moved to AddNewCTA.vue component */
 .cog-icon {
   font-size: 15px;
   cursor: pointer;
@@ -692,6 +718,8 @@ h1 {
   position: relative;
   pointer-events: auto;
 }
+
+/* ===== ENHANCED SETTINGS MODAL (Admin Profile) ===== */
 .modal {
   display: flex;
   position: fixed;
@@ -704,6 +732,7 @@ h1 {
   justify-content: center;
   align-items: center;
 }
+
 .modal-content {
   background-color: white;
   border-radius: 15px;
@@ -713,38 +742,73 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
 }
+
 .close {
   position: absolute;
   top: 10px;
   right: 15px;
   font-size: 24px;
   cursor: pointer;
+  color: #4A5568;
 }
-.profile-picture .avatar {
-  font-size: 50px;
-  color: #006400;
-  margin-bottom: 10px;
-}
-h2 {
-  font-size: 22px;
-  color: #4b4b4b;
-  margin-bottom: 5px;
-}
-p {
-  font-size: 16px;
-  color: black;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-.sign-out {
-  color: red;
-  text-decoration: none;
-  font-size: 18px;
 
+.close:hover {
+  color: #2D3748;
+}
+
+.profile-picture {
+  margin-bottom: 15px;
+}
+
+.profile-picture .avatar {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #2d7d2d 0%, #235F23 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  box-shadow: 
+    0 4px 12px rgba(35, 95, 35, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture .avatar i {
+  font-size: 40px;
+  color: #ffffff;
+}
+
+.modal-content h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #2D3748;
+  font-weight: 600;
+}
+
+.modal-content p {
+  font-size: 14px;
+  color: #4A5568;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.sign-out {
+  color: #e53e3e;
+  text-decoration: none;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 8px 24px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .sign-out:hover {
-  text-decoration: underline;
+  background-color: #fff5f5;
+  text-decoration: none;
 }
 
 .stats-grid {
@@ -754,27 +818,51 @@ p {
   margin-bottom: 24px;
 }
 
+/* ===== ENHANCED STAT CARDS WITH DEPTH ===== */
 .stat-card {
   flex: 1 1 200px;
-  background: white;
+  background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
   padding: 24px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  /* Layered shadow for depth - light glow on top, dark shadow at bottom */
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.9) inset,
+    0 6px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  /* Bigger shadow on hover for prominence */
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.95) inset,
+    0 10px 20px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.08);
 }
 
 .stat-icon {
-  width: 48px;
-  height: 48px;
-  background: #EBF8FF;
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4299E1;
+  color: white !important;
   font-size: 24px;
+  /* Small shadow for depth */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 4px 8px rgba(35, 95, 35, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon i {
+  color: white !important;
 }
 
 .stat-info h3 {
@@ -789,25 +877,38 @@ p {
   color: #2D3748;
 }
 
-.charts-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+/* ===== ENHANCED CHART CONTAINERS WITH DEPTH ===== */
+.chart-container {
+  flex: 1;
+  background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%);
+  padding: 24px;
+  border-radius: 15px;
+  /* Layered shadow for depth */
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.9) inset,
+    0 6px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+  min-width: 0;
+  transition: all 0.3s ease;
 }
 
-.chart-container {
-  flex: 1 1 300px;
-  min-width: 280px;
-  background: white;
-  padding: 24px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.chart-container:hover {
+  /* Slight elevation on hover */
+  box-shadow: 
+    0 1px 3px rgba(255, 255, 255, 0.95) inset,
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 3px 6px rgba(0, 0, 0, 0.06);
 }
 
 .chart-container h3 {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 700;
   color: #2D3748;
   margin-bottom: 16px;
+  margin-top: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 14px;
 }
 
 /* Force Font Awesome styles for icons in this component */
@@ -833,16 +934,29 @@ i.fab {
     font-weight: 400 !important; /* Or as appropriate for brand icons */
 }
 
-.dashboard-text {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+/* Responsive styles for dashboard content */
+@media (max-width: 1400px) {
+  .dashboard-content-row {
+    flex-direction: column;
+  }
+  
+  .dashboard-text-inner {
+    width: 100%;
+  }
+  
+  .charts-column {
+    width: 100%;
+  }
 }
 
-.dashboard-text-inner,
-.dashboard-text-inner-2 {
-  flex: 1 1 300px;
-  min-width: 280px;
+@media (max-width: 768px) {
+  .charts-column {
+    flex-direction: column;
+  }
+  
+  .chart-container {
+    width: 100%;
+  }
 }
 
 .overview-location .row {
@@ -873,18 +987,22 @@ i.fab {
   }
 }
 
-/* Transition styles */
+/* ===== IMPROVED SIDEBAR TRANSITION ===== */
 .slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth ease-in-out */
 }
 
 .slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); /* Slightly faster leave */
 }
 
-.slide-fade-enter-from,
+.slide-fade-enter-from {
+  transform: translateX(-300px); /* Slide in from left */
+  opacity: 0;
+}
+
 .slide-fade-leave-to {
-  transform: translateX(-280px); /* Slide out to the left */
+  transform: translateX(-300px); /* Slide out to left */
   opacity: 0;
 }
 
@@ -892,11 +1010,13 @@ i.fab {
 .content-full {
   width: 100%;
   margin-left: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth expansion */
 }
 .content-shifted {
   /* This might not be strictly necessary if the .first-column is part of the flex layout 
      and .second-column uses flex-grow. However, explicit control can be useful. */
   /* margin-left: 280px; /* Width of the sidebar */ 
   /* width: calc(100% - 280px); */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition */
 }
 </style>

@@ -174,6 +174,7 @@
                 <th>Gender</th>
                 <th>Marital Status</th>
                 <th>Religion</th>
+                <th>Ethnicity</th>
                 <th>Family Income</th>
                 <th>Study Device</th>
             </tr>
@@ -189,12 +190,13 @@
                 <td>{{ $student->gender }}</td>
                 <td>{{ $student->marital_status }}</td>
                 <td>{{ $student->religion }}</td>
-                <td>{{ $student->family_income_bracket }}</td>
+                <td>{{ $student->ethnicity ?? 'N/A' }}</td>
+                <td>{{ $student->family_income ?? 'N/A' }}</td>
                 <td>{{ $student->study_device ?? 'N/A' }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="10" style="text-align: center; padding: 20px;">No students found</td>
+                <td colspan="11" style="text-align: center; padding: 20px;">No students found</td>
             </tr>
             @endforelse
         </tbody>

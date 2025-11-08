@@ -27,7 +27,8 @@
                     </p>
                     <form @submit.prevent="submitStudentForm" class="mt-8 space-y-6">
                         <!-- Personal Information Section -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <h3 class="section-heading">Personal Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label for="first_name">First Name</label>
                                 <input type="text" id="first_name" v-model="form.first_name" class="input-field" required />
@@ -42,10 +43,20 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="student_id">Student ID</label>
-                                <input type="text" id="student_id" v-model="form.student_id" class="input-field" required />
+                                <input 
+                                    type="text" 
+                                    id="student_id" 
+                                    v-model="form.student_id" 
+                                    class="input-field" 
+                                    pattern="\d{4}-\d{5}"
+                                    placeholder="2023-01292"
+                                    title="Format: YYYY-##### (e.g., 2023-01292)"
+                                    required 
+                                />
+                                <p class="input-helper-text">Format: YYYY-##### (e.g., 2023-01292)</p>
                             </div>
                             <div>
                                 <label for="birth_date">Birth Date</label>
@@ -53,7 +64,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="gender">Gender</label>
                                 <select id="gender" v-model="form.gender" class="input-field" required>
@@ -72,7 +83,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="religion">Religion</label>
                                 <input type="text" id="religion" v-model="form.religion" class="input-field" required />
@@ -84,6 +95,7 @@
                         </div>
 
                         <!-- Academic Information Section -->
+                        <h3 class="section-heading">Academic Information</h3>
                          <div>
                             <label for="course">Course</label>
                             <input type="text" id="course" v-model="form.course" class="input-field" required />
@@ -102,11 +114,12 @@
 
 
                         <!-- Address Section -->
+                        <h3 class="section-heading">Address Information</h3>
                         <div>
                             <label for="address">Address (House No./Street)</label>
                             <input type="text" id="address" v-model="form.address" class="input-field" required />
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label for="barangay">Barangay</label>
                                 <input type="text" id="barangay" v-model="form.barangay" class="input-field" required />
@@ -126,7 +139,8 @@
                         </div>
 
                         <!-- Parent Information Section -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <h3 class="section-heading">Parent Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label for="father_name">Father's Name</label>
                                 <input type="text" id="father_name" v-model="form.father_name" class="input-field" placeholder="e.g., Juan Dela Cruz" required />
@@ -160,7 +174,9 @@
                         </div>
 
                         <!-- Socio-Economic Information Section -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <h3 class="section-heading">Socio-Economic Information</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="study_device">Primary Study Device</label>
                                 <select id="study_device" v-model="form.study_device" class="input-field">
@@ -177,7 +193,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="housing_status">Housing Status</label>
                                 <select id="housing_status" v-model="form.housing_status" class="input-field" required>
@@ -188,37 +204,50 @@
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="checkbox-label">
-                                <input type="checkbox" id="is_solo_parent" v-model="form.is_solo_parent" class="checkbox-input" />
-                                <label for="is_solo_parent" class="ml-2">Are you a solo parent?</label>
-                            </div>
-                            <div v-if="form.is_solo_parent">
-                                <label for="solo_parent_id">Solo Parent ID No.</label>
-                                <input type="text" id="solo_parent_id" v-model="form.solo_parent_id" class="input-field" />
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="checkbox-label">
-                                <input type="checkbox" id="has_part_time_job" v-model="form.has_part_time_job" class="checkbox-input" />
-                                <label for="has_part_time_job" class="ml-2">Do you have a part-time job?</label>
-                            </div>
-                            <div class="checkbox-label">
-                                <input type="checkbox" id="pwd" v-model="form.pwd" class="checkbox-input" />
-                                <label for="pwd" class="ml-2">Are you a Person with Disability (PWD)?</label>
-                            </div>
-                            <div v-if="form.pwd">
-                                <label for="pwd_id">PWD ID Number</label>
-                                <input type="text" id="pwd_id" v-model="form.pwd_id" class="input-field" placeholder="PWD ID No." />
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label for="daily_fare">Daily Fare (PHP)</label>
+                                <label for="monthly_rental">Monthly Boarding/Rental (PHP, if applicable)</label>
+                                <input type="number" id="monthly_rental" v-model.number="form.monthly_rental" class="input-field" placeholder="e.g., 2500" />
+                            </div>
+                        </div>
+                        
+                        <!-- Status Checkboxes Section -->
+                        <div class="checkbox-section">
+                            <!-- Solo Parent Row -->
+                            <div class="checkbox-row-with-input">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="is_solo_parent" v-model="form.is_solo_parent" class="checkbox-input" />
+                                    <label for="is_solo_parent" class="checkbox-text">Are you a solo parent?</label>
+                                </div>
+                                <div v-if="form.is_solo_parent" class="conditional-input">
+                                    <label for="solo_parent_id">Solo Parent ID No.</label>
+                                    <input type="text" id="solo_parent_id" v-model="form.solo_parent_id" class="input-field" placeholder="Solo Parent ID" />
+                                </div>
+                            </div>
+                            
+                            <!-- Part-Time Job Row -->
+                            <div class="checkbox-row-with-input">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="has_part_time_job" v-model="form.has_part_time_job" class="checkbox-input" />
+                                    <label for="has_part_time_job" class="checkbox-text">Do you have a part-time job?</label>
+                                </div>
+                            </div>
+                            
+                            <!-- PWD Row -->
+                            <div class="checkbox-row-with-input">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="pwd" v-model="form.pwd" class="checkbox-input" />
+                                    <label for="pwd" class="checkbox-text">Are you a Person with Disability (PWD)?</label>
+                                </div>
+                                <div v-if="form.pwd" class="conditional-input">
+                                    <label for="pwd_id">PWD ID Number</label>
+                                    <input type="text" id="pwd_id" v-model="form.pwd_id" class="input-field" placeholder="PWD ID No." />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="daily_fare">Daily Fare</label>
                                 <select id="daily_fare" v-model="form.daily_fare" class="input-field">
                                     <option value="">Select Daily Fare</option>
                                     <option value="Php 20.00 - Php 50.00">Php 20.00 - Php 50.00</option>
@@ -228,16 +257,14 @@
                                     <option value="N/A">N/A</option>
                                 </select>
                             </div>
-                            <div>
-                                <label for="monthly_rental">Monthly Boarding/Rental (PHP, if applicable)</label>
-                                <input type="number" id="monthly_rental" v-model.number="form.monthly_rental" class="input-field" placeholder="e.g., 2500" />
-                            </div>
                         </div>
 
                         <!-- Transportation & Ethnicity Section -->
-                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <h3 class="section-heading">Transportation & Ethnicity</h3>
+                        
+                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
-                                <label for="transportation_mode">Mode of Transportation to School</label>
+                                <label for="transportation_mode">Mode of Transportation</label>
                                 <select id="transportation_mode" v-model="form.transportation_mode" class="input-field" required>
                                     <option value="">Select Transportation</option>
                                     <option value="Car">Car</option>
@@ -248,7 +275,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="travel_time_minutes">Travel Time to School (minutes)</label>
+                                <label for="travel_time_minutes">Travel Time (Minutes)</label>
                                 <input type="number" id="travel_time_minutes" v-model.number="form.travel_time_minutes" class="input-field" placeholder="e.g., 30" required />
                             </div>
                              <div>
@@ -341,15 +368,209 @@ const submitStudentForm = () => {
 /* Basic responsive adjustments and centering */
 /* Styles for .form-container and .logo-container are now simpler as they stack */
 
+/* ===== ENHANCED FORM INPUTS WITH DEPTH ===== */
 .input-field {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
-    /* Ensure width and box-sizing for robustness */
-    width: 100% !important; /* Tailwind's w-full is usually enough, but !important can override conflicts */
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #2D3748;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    transition: all 0.2s ease;
     box-sizing: border-box !important;
+    /* Subtle inset shadow for depth */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.input-field::placeholder {
+    color: #a0aec0;
+}
+
+.input-field:hover {
+    border-color: #cbd5e0;
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #235F23;
+    background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
+    /* Glowing effect on focus */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 0 0 3px rgba(35, 95, 35, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
 }
 
 label {
-    @apply block text-sm font-medium text-gray-700 mb-1;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-height: 2.5rem; /* Ensure consistent label height */
+    line-height: 1.25rem;
+}
+
+/* ===== ENHANCED SUBMIT BUTTON WITH PROMINENCE ===== */
+button[type="submit"] {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Small shadow for depth */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.2) inset,
+      0 4px 8px rgba(35, 95, 35, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #3a9a3a 0%, #2d7d2d 100%) !important;
+    /* Bigger shadow on hover for prominence */
+    box-shadow: 
+      0 1px 0 rgba(255, 255, 255, 0.3) inset,
+      0 6px 12px rgba(35, 95, 35, 0.4),
+      0 3px 6px rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:active:not(:disabled) {
+    transform: translateY(0);
+    /* Inset shadow to appear pressed */
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.2) inset,
+      0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+button[type="submit"]:disabled {
+    background: linear-gradient(to bottom, #cbd5e0 0%, #a0aec0 100%) !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    transform: none;
+}
+
+/* ===== SECTION HEADINGS FOR BETTER HIERARCHY ===== */
+.section-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2D3748;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== ENHANCED CHECKBOX SECTION ===== */
+.checkbox-section {
+    background: linear-gradient(to bottom, #f7fafc 0%, #edf2f7 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    /* Subtle depth */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.5) inset,
+        0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* ===== ENHANCED CHECKBOX ROWS WITH INLINE INPUTS ===== */
+.checkbox-row-with-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    align-items: start; /* Align both items to top */
+}
+
+@media (max-width: 768px) {
+    .checkbox-row-with-input {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    /* Subtle shadow for depth */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.checkbox-wrapper:hover {
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 3px 6px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+}
+
+.conditional-input {
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease-out;
+}
+
+.conditional-input label {
+    margin-bottom: 0.5rem;
+    min-height: auto !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.conditional-input .input-field {
+    /* No height override needed, let it be natural */
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.checkbox-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-left: 0.75rem;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+    line-height: 1.5rem;
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 /* Styling for select dropdowns */
@@ -362,16 +583,71 @@ select.input-field {
     padding-right: 2.5rem; /* Make space for arrow */
 }
 
-/* Styling for checkboxes */
+/* ===== ENHANCED CHECKBOX INPUTS ===== */
 .checkbox-label {
-    @apply flex items-center;
+    display: flex;
+    align-items: center;
 }
+
 .checkbox-input {
-    @apply h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #cbd5e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    flex-shrink: 0;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    position: relative;
+    /* Subtle inset shadow */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+.checkbox-input:hover {
+    border-color: #a0aec0;
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
+}
+
 .checkbox-input:checked {
-    background-color: #4F46E5;
-    border-color: #4F46E5;
+    background: linear-gradient(to bottom, #2d7d2d 0%, #235F23 100%);
+    border-color: #235F23;
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 2px 4px rgba(35, 95, 35, 0.3);
+}
+
+/* Checkmark using ::after pseudo-element */
+.checkbox-input:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.75rem;
+    height: 0.75rem;
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="20 6 9 17 4 12"%3E%3C/polyline%3E%3C/svg%3E');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.checkbox-input:focus {
+    outline: none;
+    border-color: #235F23;
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 0 0 3px rgba(35, 95, 35, 0.1);
+}
+
+/* ===== INPUT HELPER TEXT ===== */
+.input-helper-text {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.25rem;
+    font-style: italic;
 }
 
 /* Ensure logo is not overly large on smaller screens but can grow */

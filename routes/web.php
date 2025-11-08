@@ -50,7 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/add-new', function () {
         return Inertia::render('AddNew');
     })->name('add-new');
-    Route::get('/student/{student}/edit', [StudentController::class, 'edit']);
+    // Edit route removed - now handled by modal in StudentList
+    // Route::get('/student/{student}/edit', [StudentController::class, 'edit']);
     Route::put('/student/{student}', [StudentController::class, 'update']);
     Route::delete('/student/{student}', [StudentController::class, 'destroy']);
     
