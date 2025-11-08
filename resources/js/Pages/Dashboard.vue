@@ -743,7 +743,7 @@ h1 {
     0 3px 6px rgba(0, 0, 0, 0.06);
 }
 .loc-1 {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: bold;
   color: #A0AEC0;
 }

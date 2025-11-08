@@ -114,6 +114,7 @@ body {
   top: 0;
   width: 862px;
   background-color: rgba(255, 247, 185, 0.2);
+  object-fit: contain;
 }
 
 .sign-in-screen .inputs {
