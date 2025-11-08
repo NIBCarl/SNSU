@@ -71,14 +71,17 @@
                                     <option value="">Select Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="marital_status">Marital Status</label>
                                 <select id="marital_status" v-model="form.marital_status" class="input-field" required>
-                                    <option value="Single">Single</option>
+                                    <option value="">Select Marital Status</option>
+                                    <option value="Single (Never Married)">Single (Never Married)</option>
                                     <option value="Married">Married</option>
+                                    <option value="Widowed">Widowed</option>
+                                    <option value="Divorced">Divorced</option>
+                                    <option value="Separated">Separated</option>
                                 </select>
                             </div>
                         </div>
@@ -98,7 +101,39 @@
                         <h3 class="section-heading">Academic Information</h3>
                          <div>
                             <label for="course">Course</label>
-                            <input type="text" id="course" v-model="form.course" class="input-field" required />
+                            <select id="course" v-model="form.course" class="input-field" required>
+                                <option value="">Select Course</option>
+                                <option value="BSCE">BSCE - Bachelor of Science in Civil Engineering</option>
+                                <option value="BSECE">BSECE - Bachelor of Science in Electronics and Communications Engineering</option>
+                                <option value="BSEE">BSEE - Bachelor of Science in Electrical Engineering</option>
+                                <option value="BSCpE">BSCpE - Bachelor of Science in Computer Engineering</option>
+                                <option value="BSIS">BSIS - Bachelor of Science in Information Systems</option>
+                                <option value="BSInfoTech">BSInfoTech - Bachelor of Science in Information Technology</option>
+                                <option value="BSCS">BSCS - Bachelor of Science in Computer Science</option>
+                                <option value="BAET">BAET - Bachelor of Automotive Engineering Technology</option>
+                                <option value="BEET">BEET - Bachelor of Electronics Engineering Technology</option>
+                                <option value="BEXET">BEXET - Bachelor of Electro-Mechanical Engineering Technology</option>
+                                <option value="BMET–MT">BMET–MT - Bachelor of Mechanical Engineering Technology - Mechanical Technology</option>
+                                <option value="BMET–RAC">BMET–RAC - Bachelor of Mechanical Engineering Technology - Refrigeration and Air Conditioning</option>
+                                <option value="BSIT–ADT">BSIT–ADT - Bachelor of Science in Industrial Technology - Automotive Design Technology</option>
+                                <option value="BSIT–AT">BSIT–AT - Bachelor of Science in Industrial Technology - Automotive Technology</option>
+                                <option value="BSIT–ELT">BSIT–ELT - Bachelor of Science in Industrial Technology - Electronics Technology</option>
+                                <option value="BSIT–MT">BSIT–MT - Bachelor of Science in Industrial Technology - Mechanical Technology</option>
+                                <option value="BSIT–WFT">BSIT–WFT - Bachelor of Science in Industrial Technology - Welding and Fabrication Technology</option>
+                                <option value="BSIT–HVACR">BSIT–HVACR - Bachelor of Science in Industrial Technology - HVACR</option>
+                                <option value="BSHM">BSHM - Bachelor of Science in Hospitality Management</option>
+                                <option value="BSTM">BSTM - Bachelor of Science in Tourism Management</option>
+                                <option value="BTVTED–FSM">BTVTED–FSM - Bachelor of Technical-Vocational Teacher Education - Food Service Management</option>
+                                <option value="BSED–ENG">BSED–ENG - Bachelor of Secondary Education - English</option>
+                                <option value="BSED–FIL">BSED–FIL - Bachelor of Secondary Education - Filipino</option>
+                                <option value="BSED–MATH">BSED–MATH - Bachelor of Secondary Education - Mathematics</option>
+                                <option value="BSED–SCI">BSED–SCI - Bachelor of Secondary Education - Science</option>
+                                <option value="BEED">BEED - Bachelor of Elementary Education</option>
+                                <option value="BPED">BPED - Bachelor of Physical Education</option>
+                                <option value="BSES">BSES - Bachelor of Special Education</option>
+                                <option value="BS Math">BS Math - Bachelor of Science in Mathematics</option>
+                                <option value="BA-EL">BA-EL - Bachelor of Arts in English Language</option>
+                            </select>
                         </div>
                         <div>
                             <label for="year_level">Year Level</label>
@@ -108,7 +143,6 @@
                                 <option value="2nd Year">2nd Year</option>
                                 <option value="3rd Year">3rd Year</option>
                                 <option value="4th Year">4th Year</option>
-                                <option value="Others">Others</option>
                             </select>
                         </div>
 
@@ -201,7 +235,6 @@
                                     <option value="Owned">Owned</option>
                                     <option value="Renting">Renting</option>
                                     <option value="Living with Relatives">Living with Relatives</option>
-                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                             <div>
@@ -318,7 +351,7 @@ const form = useForm({
     year_level: '',
     gender: '', // Set to '' or a default like 'Male' if appropriate
     birth_date: '',
-    marital_status: 'Single', // Default value
+    marital_status: '', // Default value
     religion: '',
     cellphone_number: '',
     address: '',

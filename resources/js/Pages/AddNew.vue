@@ -4,8 +4,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </Head>
   <div class="container-1">
+    <!-- Mobile Overlay Backdrop -->
+    <div v-if="isSidebarOpen" @click="toggleSidebar" class="sidebar-backdrop"></div>
+    
+    <!-- Sidebar -->
     <Transition name="slide-fade">
-      <div v-if="isSidebarOpen" class="inner-container first-column">
+      <div v-if="isSidebarOpen" class="inner-container first-column sidebar-menu">
         <div class="logo-sec">
           <img class="logo" src="/assets/logo.png" alt="University logo" />
           <h1 class="logo-text">Dashboard</h1>
@@ -33,10 +37,6 @@
         </button>
         <h1 class="main-title"><span class="gray">Pages</span> / Add new</h1>
         <div class="admin-setting flex">
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input v-model="search" class="main-input" type="text" placeholder="Search" />
-          </div>
           <ul class="admin-icons flex">
             <Link href="/profile" class="admin">
               <i class="fas fa-user admin-user-icon"></i>admin
@@ -111,7 +111,6 @@
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
-                <option value="Other">Other</option>
               </select>
               <div v-if="errors.gender" class="error">{{ errors.gender }}</div>
             </div>
@@ -119,8 +118,11 @@
               <label>Marital Status</label>
               <select v-model="form.marital_status" required>
                 <option value="">Select Marital Status</option>
-                <option value="Single">Single</option>
+                <option value="Single (Never Married)">Single (Never Married)</option>
                 <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Separated">Separated</option>
               </select>
               <div v-if="errors.marital_status" class="error">{{ errors.marital_status }}</div>
             </div>
@@ -143,7 +145,39 @@
           <h3 class="section-title">Academic Information</h3>
           <div class="form-group">
             <label>Course</label>
-            <input v-model="form.course" type="text" required />
+            <select v-model="form.course" required>
+              <option value="">Select Course</option>
+              <option value="BSCE">BSCE - Bachelor of Science in Civil Engineering</option>
+              <option value="BSECE">BSECE - Bachelor of Science in Electronics and Communications Engineering</option>
+              <option value="BSEE">BSEE - Bachelor of Science in Electrical Engineering</option>
+              <option value="BSCpE">BSCpE - Bachelor of Science in Computer Engineering</option>
+              <option value="BSIS">BSIS - Bachelor of Science in Information Systems</option>
+              <option value="BSInfoTech">BSInfoTech - Bachelor of Science in Information Technology</option>
+              <option value="BSCS">BSCS - Bachelor of Science in Computer Science</option>
+              <option value="BAET">BAET - Bachelor of Automotive Engineering Technology</option>
+              <option value="BEET">BEET - Bachelor of Electronics Engineering Technology</option>
+              <option value="BEXET">BEXET - Bachelor of Electro-Mechanical Engineering Technology</option>
+              <option value="BMET–MT">BMET–MT - Bachelor of Mechanical Engineering Technology - Mechanical Technology</option>
+              <option value="BMET–RAC">BMET–RAC - Bachelor of Mechanical Engineering Technology - Refrigeration and Air Conditioning</option>
+              <option value="BSIT–ADT">BSIT–ADT - Bachelor of Science in Industrial Technology - Automotive Design Technology</option>
+              <option value="BSIT–AT">BSIT–AT - Bachelor of Science in Industrial Technology - Automotive Technology</option>
+              <option value="BSIT–ELT">BSIT–ELT - Bachelor of Science in Industrial Technology - Electronics Technology</option>
+              <option value="BSIT–MT">BSIT–MT - Bachelor of Science in Industrial Technology - Mechanical Technology</option>
+              <option value="BSIT–WFT">BSIT–WFT - Bachelor of Science in Industrial Technology - Welding and Fabrication Technology</option>
+              <option value="BSIT–HVACR">BSIT–HVACR - Bachelor of Science in Industrial Technology - HVACR</option>
+              <option value="BSHM">BSHM - Bachelor of Science in Hospitality Management</option>
+              <option value="BSTM">BSTM - Bachelor of Science in Tourism Management</option>
+              <option value="BTVTED–FSM">BTVTED–FSM - Bachelor of Technical-Vocational Teacher Education - Food Service Management</option>
+              <option value="BSED–ENG">BSED–ENG - Bachelor of Secondary Education - English</option>
+              <option value="BSED–FIL">BSED–FIL - Bachelor of Secondary Education - Filipino</option>
+              <option value="BSED–MATH">BSED–MATH - Bachelor of Secondary Education - Mathematics</option>
+              <option value="BSED–SCI">BSED–SCI - Bachelor of Secondary Education - Science</option>
+              <option value="BEED">BEED - Bachelor of Elementary Education</option>
+              <option value="BPED">BPED - Bachelor of Physical Education</option>
+              <option value="BSES">BSES - Bachelor of Special Education</option>
+              <option value="BS Math">BS Math - Bachelor of Science in Mathematics</option>
+              <option value="BA-EL">BA-EL - Bachelor of Arts in English Language</option>
+            </select>
             <div v-if="errors.course" class="error">{{ errors.course }}</div>
           </div>
           <div class="form-group">
@@ -154,7 +188,6 @@
               <option value="2nd Year">2nd Year</option>
               <option value="3rd Year">3rd Year</option>
               <option value="4th Year">4th Year</option>
-              <option value="Others">Others</option>
             </select>
             <div v-if="errors.year_level" class="error">{{ errors.year_level }}</div>
           </div>
@@ -256,7 +289,6 @@
                 <option value="Owned">Owned</option>
                 <option value="Renting">Renting</option>
                 <option value="Living with Relatives">Living with Relatives</option>
-                <option value="Other">Other</option>
               </select>
               <div v-if="errors.housing_status" class="error">{{ errors.housing_status }}</div>
             </div>
@@ -366,15 +398,36 @@
 
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import AddNewCTA from '@/Components/AddNewCTA.vue';
 
-// Sidebar toggle state and function
-const isSidebarOpen = ref(true);
+// Sidebar toggle state and function with mobile detection
+const isMobile = ref(window.innerWidth <= 768);
+const isSidebarOpen = ref(window.innerWidth > 768); // Open by default on desktop, closed on mobile
+
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
+
+// Handle window resize
+const handleResize = () => {
+  isMobile.value = window.innerWidth <= 768;
+  // Auto-open sidebar on desktop, auto-close on mobile when resizing
+  if (window.innerWidth > 768) {
+    isSidebarOpen.value = true;
+  } else {
+    isSidebarOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 
 // Props
 defineProps({
@@ -390,7 +443,6 @@ defineProps({
 
 // Existing reactive variables for this page
 const showModal = ref(false); // For the admin profile modal
-const search = ref(''); // For the search bar in the header
 const processing = ref(false); // For form submission state
 
 // Student Information Form definition
@@ -403,7 +455,7 @@ const form = useForm({
   year_level: '',
   gender: '', // Set to '' or a default like 'Male' if appropriate
   birth_date: '',
-  marital_status: 'Single', // Default value
+  marital_status: '', // Default value
   religion: '',
   cellphone_number: '',
   address: '',
@@ -579,16 +631,6 @@ body {
     color: #A0AEC0;
     font-size: 12px;
 }
-.search-bar {
-    border: 0.5px solid #E2E8F0;
-    border-radius: 15px;
-    padding: 8.5px 13px;
-    margin-right: 56px;
-}
-.fas.fa-search {
-    color: #2D3748;
-    padding-right: 12.68px;
-}   
 .admin-setting {
     align-items: center;
 }
@@ -751,17 +793,20 @@ h1 {
     display: flex;  
     justify-content: flex-start;
 }
-/* ===== ENHANCED FORM CONTAINER WITH DEPTH ===== */
+/* ===== ENHANCED FORM CONTAINER WITH LAYERED DEPTH ===== */
 .add-student-info {
-    padding: 32px 36px;
-    background: linear-gradient(to bottom, #ffffff 0%, #fafbfc 100%);
-    /* Layered shadow for depth - light glow on top, dark shadow at bottom */
-    box-shadow: 
-      0 1px 3px rgba(255, 255, 255, 0.9) inset,
-      0 6px 12px rgba(0, 0, 0, 0.08),
-      0 2px 4px rgba(0, 0, 0, 0.05);
-    border-radius: 15px;
+    padding: 40px 48px;
+    /* Lighter shade background - elevated from page */
+    background: linear-gradient(to bottom, #ffffff 0%, #f7fafc 100%);
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
     transition: all 0.3s ease;
+    /* Medium shadow - prominent elevation */
+    box-shadow: 
+      0 2px 0 rgba(255, 255, 255, 0.9) inset,
+      0 8px 16px rgba(0, 0, 0, 0.06),
+      0 4px 8px rgba(0, 0, 0, 0.04),
+      0 2px 4px rgba(0, 0, 0, 0.02);
 }
 .location-headline {
     font-size: 18px;
@@ -772,13 +817,31 @@ h1 {
 .headline-overview-location {
     padding-bottom: 28px;
 }
-/* CTA button styles moved to AddNewCTA.vue component */
+
+/* ===== ENHANCED MAIN HEADING WITH PROMINENCE ===== */
 h2 {
-    margin-bottom: 15px;
-    font-size: 18px;
-    color: #2D3748;
-    line-height: 25.02px;
+    margin-bottom: 24px;
+    font-size: 28px;
+    color: #1a202c;
+    line-height: 1.3;
     font-weight: 700;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #e2e8f0;
+    /* Dual shadow for depth - lighter shade above */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+/* Accent line for emphasis */
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #2d7d2d 0%, #38a169 100%);
+    border-radius: 2px;
 }
 
 .row {
@@ -892,16 +955,7 @@ input[type="radio"] {
       0 2px 4px rgba(0, 0, 0, 0.2) inset,
       0 1px 2px rgba(0, 0, 0, 0.1);
 }
-.button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.button-add:hover {
-    background-color: #04AA6D;
-}
+/* button-container style consolidated below */
 .cog-icon {
     font-size: 15px;
     cursor: pointer;
@@ -999,14 +1053,23 @@ input[type="radio"] {
     text-decoration: none;
 }
 
+/* ===== ENHANCED SECTION TITLES WITH LAYERING ===== */
 .section-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
-    color: #2D3748;
-    margin-top: 24px;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #E2E8F0;
+    color: #1a202c;
+    margin-top: 32px;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    /* Lighter shade background to elevate */
+    background: linear-gradient(to right, #f7fafc 0%, #ffffff 100%);
+    border-left: 4px solid #2d7d2d;
+    border-radius: 6px;
+    /* Small shadow for depth */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
 }
 
 .form-row-2 {
@@ -1033,41 +1096,62 @@ input[type="radio"] {
     margin-bottom: 8px;
     color: #2D3748;
     font-weight: 500;
-    font-size: 13px;
+    font-size: 18px;
     min-height: 2.5rem; /* Ensure consistent label height for alignment */
     line-height: 1.25rem;
     display: flex;
     align-items: flex-start;
 }
 
+/* ===== ENHANCED FORM INPUTS WITH DUAL SHADOWS ===== */
 .form-group input,
 .form-group select {
-    padding: 10px 12px;
-    border: 1px solid #E2E8F0;
-    border-radius: 6px;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
     font-size: 14px;
     width: 100%;
     box-sizing: border-box;
-    transition: border-color 0.2s;
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    color: #2d3748;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    /* Dual shadow: light top inset + dark bottom outset */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.form-group input:hover,
+.form-group select:hover {
+    border-color: #cbd5e0;
+    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #235F23;
+    border-color: #2d7d2d;
+    /* Medium shadow for prominence on focus */
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 0 0 3px rgba(45, 125, 45, 0.1),
+        0 4px 6px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
 }
 
-/* ===== ENHANCED CHECKBOX SECTIONS ===== */
+/* ===== ENHANCED CHECKBOX SECTIONS WITH LAYERING ===== */
 .checkbox-section {
     margin-bottom: 1.5rem;
-    padding: 1rem 0;
-    border-radius: 8px;
-    background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
     padding: 1.5rem;
-    /* Subtle shadow for depth */
+    border-radius: 10px;
+    /* Darker shade to de-emphasize - pushed deeper */
+    background: linear-gradient(to bottom, #f7fafc 0%, #edf2f7 100%);
+    border: 1px solid #e2e8f0;
+    /* Inset shadow for depth - appears recessed */
     box-shadow: 
-        0 1px 0 rgba(255, 255, 255, 0.5) inset,
-        0 2px 4px rgba(0, 0, 0, 0.03);
+        0 2px 4px rgba(0, 0, 0, 0.04) inset,
+        0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 /* ===== ENHANCED CHECKBOX ROWS WITH INLINE INPUTS ===== */
@@ -1215,98 +1299,210 @@ input[type="radio"] {
     font-style: italic;
 }
 
-.button-add {
-    background-color: #235F23;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-}
+/* Button styles consolidated above - duplicate removed */
 
 .button-add:disabled {
-    opacity: 0.7;
+    opacity: 0.6;
     cursor: not-allowed;
+    /* Inset shadow to appear depressed when disabled */
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.1) inset;
+    transform: none;
 }
 
 .button-container {
-    text-align: right;
-    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid #e2e8f0;
 }
 
-/* Responsive Form Grids */
+/* ===== ENHANCED RESPONSIVE DESIGN - REARRANGING WITH PURPOSE ===== */
 @media (max-width: 768px) {
+  /* Form container - reduce padding but maintain depth */
+  .add-student-info {
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+  
+  /* Main heading - maintain prominence */
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+  
+  h2::after {
+    width: 60px;
+  }
+  
+  /* Section titles - flow better on mobile */
+  .section-title {
+    font-size: 16px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    padding: 10px 12px;
+  }
+  
+  /* Form grids - stack vertically with clear spacing */
   .form-row-2,
   .form-row-3 {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   
+  /* Labels - adjust for mobile */
+  .form-group label {
+    font-size: 16px;
+    min-height: auto;
+  }
+  
+  /* Inputs - maintain depth on mobile */
+  .form-group input,
+  .form-group select {
+    padding: 14px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  /* Checkbox sections - reprioritize */
   .checkbox-row-with-input {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .section-title {
-    font-size: 14px;
-    margin-top: 20px;
-    margin-bottom: 12px;
+  .checkbox-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Button - full width for easier tapping */
+  .button-container {
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+  
+  .button-add {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
   }
 }
 
-/* Responsive adjustments for columns */
+/* ===== MOBILE SIDEBAR AS OVERLAY ===== */
 @media (max-width: 768px) { 
   .container-1 {
-    flex-direction: column;
-    padding: 0.5rem;
-    gap: 0.5rem;
+    position: relative;
+    flex-direction: row; /* Keep row to allow overlay */
+    padding: 0;
+    gap: 0;
   }
-  .first-column {
-    width: 100%; 
-    margin-bottom: 1rem; 
+  
+  /* Sidebar as overlay on mobile */
+  .first-column.sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 85vw;
+    margin: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    /* Enhanced shadow for prominence */
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.2),
+      0 4px 12px rgba(0, 0, 0, 0.15);
   }
+  
+  /* Backdrop overlay */
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Content takes full width on mobile */
   .second-column {
-    width: 100%;
+    width: 100% !important;
     padding: 0.5rem;
+    margin-left: 0 !important;
   }
+  
   .page-info {
-    flex-direction: column;
-    align-items: flex-start; 
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
   }
+  
+  .main-title {
+    font-size: 20px;
+    flex: 1;
+  }
+  
   .admin-setting {
     width: 100%;
     margin-top: 1rem;
     flex-direction: column;
     align-items: stretch;
   }
-  .search-bar {
-    width: 100%;
-    margin-right: 0; 
-    margin-bottom: 0.5rem; 
-  }
+  
   .admin-icons {
     justify-content: flex-start;
     margin-top: 0.5rem;
+  }
+  
+  /* Ensure hamburger is always visible on mobile */
+  .hamburger-button {
+    display: flex !important;
+    margin-right: 0.75rem;
   }
 }
 
 /* ===== IMPROVED SIDEBAR TRANSITION ===== */
 .slide-fade-enter-active {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth ease-in-out */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); /* Slightly faster leave */
+  transition: transform 0.25s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .slide-fade-enter-from {
-  transform: translateX(-300px); /* Slide in from left */
-  opacity: 0;
+  transform: translateX(-100%);
 }
 
 .slide-fade-leave-to {
-  transform: translateX(-300px); /* Slide out to left */
-  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* Desktop: No transform needed */
+@media (min-width: 769px) {
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  
+  /* Hide backdrop on desktop */
+  .sidebar-backdrop {
+    display: none;
+  }
 }
 
 /* Adjust second-column based on sidebar visibility for desktop */

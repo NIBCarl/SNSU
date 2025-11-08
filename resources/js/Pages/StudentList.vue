@@ -1,7 +1,11 @@
 <template>
   <div class="container-1">
+    <!-- Mobile Overlay Backdrop -->
+    <div v-if="isSidebarOpen" @click="toggleSidebar" class="sidebar-backdrop"></div>
+    
+    <!-- Sidebar -->
     <Transition name="slide-fade">
-      <div v-if="isSidebarOpen" class="inner-container first-column">
+      <div v-if="isSidebarOpen" class="inner-container first-column sidebar-menu">
         <div class="logo-sec">
           <img class="logo" src="/assets/logo.png" alt="University logo">
           <h1 class="logo-text">Dashboard</h1>
@@ -319,7 +323,6 @@
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
-                    <option value="Other">Other</option>
                   </select>
                   <div v-if="editErrors.gender" class="error">{{ editErrors.gender }}</div>
                 </div>
@@ -327,8 +330,11 @@
                   <label>Marital Status</label>
                   <select v-model="editForm.marital_status" required>
                     <option value="">Select Marital Status</option>
-                    <option value="Single">Single</option>
+                    <option value="Single (Never Married)">Single (Never Married)</option>
                     <option value="Married">Married</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Separated">Separated</option>
                   </select>
                   <div v-if="editErrors.marital_status" class="error">{{ editErrors.marital_status }}</div>
                 </div>
@@ -351,7 +357,39 @@
               <h4 class="section-title-modal">Academic Information</h4>
               <div class="form-group-modal">
                 <label>Course</label>
-                <input v-model="editForm.course" type="text" required />
+                <select v-model="editForm.course" required>
+                  <option value="">Select Course</option>
+                  <option value="BSCE">BSCE - Bachelor of Science in Civil Engineering</option>
+                  <option value="BSECE">BSECE - Bachelor of Science in Electronics and Communications Engineering</option>
+                  <option value="BSEE">BSEE - Bachelor of Science in Electrical Engineering</option>
+                  <option value="BSCpE">BSCpE - Bachelor of Science in Computer Engineering</option>
+                  <option value="BSIS">BSIS - Bachelor of Science in Information Systems</option>
+                  <option value="BSInfoTech">BSInfoTech - Bachelor of Science in Information Technology</option>
+                  <option value="BSCS">BSCS - Bachelor of Science in Computer Science</option>
+                  <option value="BAET">BAET - Bachelor of Automotive Engineering Technology</option>
+                  <option value="BEET">BEET - Bachelor of Electronics Engineering Technology</option>
+                  <option value="BEXET">BEXET - Bachelor of Electro-Mechanical Engineering Technology</option>
+                  <option value="BMET–MT">BMET–MT - Bachelor of Mechanical Engineering Technology - Mechanical Technology</option>
+                  <option value="BMET–RAC">BMET–RAC - Bachelor of Mechanical Engineering Technology - Refrigeration and Air Conditioning</option>
+                  <option value="BSIT–ADT">BSIT–ADT - Bachelor of Science in Industrial Technology - Automotive Design Technology</option>
+                  <option value="BSIT–AT">BSIT–AT - Bachelor of Science in Industrial Technology - Automotive Technology</option>
+                  <option value="BSIT–ELT">BSIT–ELT - Bachelor of Science in Industrial Technology - Electronics Technology</option>
+                  <option value="BSIT–MT">BSIT–MT - Bachelor of Science in Industrial Technology - Mechanical Technology</option>
+                  <option value="BSIT–WFT">BSIT–WFT - Bachelor of Science in Industrial Technology - Welding and Fabrication Technology</option>
+                  <option value="BSIT–HVACR">BSIT–HVACR - Bachelor of Science in Industrial Technology - HVACR</option>
+                  <option value="BSHM">BSHM - Bachelor of Science in Hospitality Management</option>
+                  <option value="BSTM">BSTM - Bachelor of Science in Tourism Management</option>
+                  <option value="BTVTED–FSM">BTVTED–FSM - Bachelor of Technical-Vocational Teacher Education - Food Service Management</option>
+                  <option value="BSED–ENG">BSED–ENG - Bachelor of Secondary Education - English</option>
+                  <option value="BSED–FIL">BSED–FIL - Bachelor of Secondary Education - Filipino</option>
+                  <option value="BSED–MATH">BSED–MATH - Bachelor of Secondary Education - Mathematics</option>
+                  <option value="BSED–SCI">BSED–SCI - Bachelor of Secondary Education - Science</option>
+                  <option value="BEED">BEED - Bachelor of Elementary Education</option>
+                  <option value="BPED">BPED - Bachelor of Physical Education</option>
+                  <option value="BSES">BSES - Bachelor of Special Education</option>
+                  <option value="BS Math">BS Math - Bachelor of Science in Mathematics</option>
+                  <option value="BA-EL">BA-EL - Bachelor of Arts in English Language</option>
+                </select>
                 <div v-if="editErrors.course" class="error">{{ editErrors.course }}</div>
               </div>
               <div class="form-group-modal">
@@ -362,7 +400,6 @@
                   <option value="2nd Year">2nd Year</option>
                   <option value="3rd Year">3rd Year</option>
                   <option value="4th Year">4th Year</option>
-                  <option value="Others">Others</option>
                 </select>
                 <div v-if="editErrors.year_level" class="error">{{ editErrors.year_level }}</div>
               </div>
@@ -464,7 +501,6 @@
                     <option value="Owned">Owned</option>
                     <option value="Renting">Renting</option>
                     <option value="Living with Relatives">Living with Relatives</option>
-                    <option value="Other">Other</option>
                   </select>
                   <div v-if="editErrors.housing_status" class="error">{{ editErrors.housing_status }}</div>
                 </div>
@@ -572,13 +608,26 @@
 
 <script setup>
 import { Link, router, usePage } from '@inertiajs/vue3';
-import { ref, watch, onMounted, computed } from 'vue';
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue';
 import debounce from 'lodash/debounce';
 import AddNewCTA from '@/Components/AddNewCTA.vue';
 
-const isSidebarOpen = ref(true);
+// Sidebar toggle state and function with mobile detection
+const isMobile = ref(window.innerWidth <= 768);
+const isSidebarOpen = ref(window.innerWidth > 768); // Open by default on desktop, closed on mobile
+
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
+};
+
+// Handle window resize
+const handleResize = () => {
+  isMobile.value = window.innerWidth <= 768;
+  if (window.innerWidth > 768) {
+    isSidebarOpen.value = true;
+  } else {
+    isSidebarOpen.value = false;
+  }
 };
 
 const showModal = ref(false);
@@ -663,7 +712,7 @@ const editForm = ref({
   year_level: '',
   gender: '',
   birth_date: '',
-  marital_status: 'Single',
+  marital_status: '',
   religion: '',
   cellphone_number: '',
   address: '',
@@ -859,7 +908,7 @@ const openEditModal = (student) => {
     year_level: student.year_level || '',
     gender: student.gender || '',
     birth_date: student.birth_date || '',
-    marital_status: student.marital_status || 'Single',
+    marital_status: student.marital_status || '',
     religion: student.religion || '',
     cellphone_number: student.cellphone_number || '',
     address: student.address || '',
@@ -915,6 +964,16 @@ const updateStudent = () => {
     }
   });
 };
+
+// Add resize listener on mount
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+// Cleanup on unmount
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 
 </script>
 
@@ -974,29 +1033,64 @@ const updateStudent = () => {
 }
 
 /* Responsive adjustments for columns if needed */
-@media (max-width: 768px) { /* Example breakpoint for tablets and below */
+/* ===== MOBILE SIDEBAR AS OVERLAY ===== */
+@media (max-width: 768px) {
   .container-1 {
-    flex-direction: column;
-    padding: 0.5rem;
-    gap: 0.5rem;
+    position: relative;
+    flex-direction: row;
+    padding: 0;
+    gap: 0;
   }
-  .first-column {
-    width: 100%; 
-    /* position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; for an overlay effect on mobile */
-    margin-bottom: 1rem; 
+  
+  /* Sidebar as overlay on mobile */
+  .first-column,
+  .first-column.sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 85vw;
+    margin: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.2),
+      0 4px 12px rgba(0, 0, 0, 0.15);
   }
+  
+  /* Backdrop overlay */
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeInBackdrop 0.3s ease;
+  }
+  
+  @keyframes fadeInBackdrop {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Content takes full width on mobile */
   .second-column {
-    width: 100%;
+    width: 100% !important;
+    padding: 0.5rem;
+    margin-left: 0 !important;
   }
-  .content-shifted {
-    /* No specific shift needed if sidebar stacks above in mobile view */
-  }
-  .content-full {
-    width: 100%;
-  }
+  
   .page-info {
-    flex-direction: column;
-    align-items: flex-start; /* Align items to start on small screens */
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
   }
   .admin-setting {
     width: 100%;
@@ -1006,6 +1100,12 @@ const updateStudent = () => {
     width: 100%;
     margin-right: 0; /* Remove right margin */
     margin-bottom: 0.5rem; /* Add some space below search */
+  }
+  
+  /* Ensure hamburger is always visible on mobile */
+  .hamburger-button {
+    display: flex !important;
+    margin-right: 0.75rem;
   }
 }
 
@@ -1718,21 +1818,33 @@ h1 {
 
 /* ===== IMPROVED SIDEBAR TRANSITION ===== */
 .slide-fade-enter-active {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth ease-in-out */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); /* Slightly faster leave */
+  transition: transform 0.25s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .slide-fade-enter-from {
-  transform: translateX(-300px); /* Slide in from left */
-  opacity: 0;
+  transform: translateX(-100%);
 }
 
 .slide-fade-leave-to {
-  transform: translateX(-300px); /* Slide out to left */
-  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* Desktop: No transform needed */
+@media (min-width: 769px) {
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  
+  /* Hide backdrop on desktop */
+  .sidebar-backdrop {
+    display: none;
+  }
 }
 
 /* Adjust second-column based on sidebar visibility for desktop */
@@ -2327,17 +2439,9 @@ i.fab {
   margin: 0;
   font-size: 26px;
   font-weight: 700;
-  color: #1a202c;
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 1px;
-  /* Subtle text shadow for depth */
-  text-shadow: 
-    0 1px 0 rgba(255, 255, 255, 0.8),
-    0 2px 4px rgba(0, 0, 0, 0.05);
-  background: linear-gradient(135deg, #2d7d2d 0%, #38a169 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .close-button {

@@ -1,9 +1,12 @@
 <template>
   <Head title="Dashboard" />
   <div class="container-1">
+    <!-- Mobile Overlay Backdrop -->
+    <div v-if="isSidebarOpen" @click="toggleSidebar" class="sidebar-backdrop"></div>
+    
     <!-- Sidebar -->
     <Transition name="slide-fade">
-      <div v-if="isSidebarOpen" class="inner-container first-column">
+      <div v-if="isSidebarOpen" class="inner-container first-column sidebar-menu">
         <div class="logo-sec">
           <img class="logo" src="/assets/logo.png" alt="University logo" />
           <h1 class="logo-text">Dashboard</h1>
@@ -118,9 +121,9 @@
             </div>
           </div>
           <div class="chart-container">
-            <h3>Income Distribution</h3>
+            <h3>Solo Parent Distribution</h3>
             <div style="position: relative; height: 300px;">
-              <canvas id="incomeChart"></canvas>
+              <canvas id="soloParentChart"></canvas>
             </div>
           </div>
         </div>
@@ -136,7 +139,7 @@
             <div class="loc-1 col">Total</div>
             <div class="loc-1 col">Indigenous</div>
             <div class="loc-1 col">PWD</div>
-            <div class="loc-1 col">Income/monthly</div>
+            <div class="loc-1 col">Solo Parent</div>
             <div class="loc-1 col">Percentage</div>
           </div>
           <hr>
@@ -146,7 +149,7 @@
               <div class="loc-3 col">{{ location.total }}</div>
               <div class="loc-3 col">{{ location.indigenous }}</div>
               <div class="loc-3 col">{{ location.pwd }}</div>
-              <div class="loc-3 col">₱{{ location.income }}</div>
+              <div class="loc-3 col">{{ location.soloParent }}</div>
               <div class="loc-4 col">{{ location.percentage }}%</div>
             </div>
             <hr>
@@ -164,10 +167,22 @@ import { Head } from '@inertiajs/vue3';
 import Chart from 'chart.js/auto';
 import AddNewCTA from '@/Components/AddNewCTA.vue';
 
-const isSidebarOpen = ref(true); // Default: sidebar is open
+// Sidebar toggle state and function with mobile detection
+const isMobile = ref(window.innerWidth <= 768);
+const isSidebarOpen = ref(window.innerWidth > 768); // Open by default on desktop, closed on mobile
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
+};
+
+// Handle window resize
+const handleResize = () => {
+  isMobile.value = window.innerWidth <= 768;
+  if (window.innerWidth > 768) {
+    isSidebarOpen.value = true;
+  } else {
+    isSidebarOpen.value = false;
+  }
 };
 
 const props = defineProps({
@@ -186,7 +201,7 @@ const totals = ref({
 
 const locations = ref([]);
 let demographicsChart = null;
-let incomeChart = null;
+let soloParentChart = null;
 
 const updateStats = async () => {
   try {
@@ -227,9 +242,9 @@ const updateCharts = () => {
     demographicsChart.destroy();
     demographicsChart = null;
   }
-  if (incomeChart) {
-    incomeChart.destroy();
-    incomeChart = null;
+  if (soloParentChart) {
+    soloParentChart.destroy();
+    soloParentChart = null;
   }
 
   // Create demographics chart
@@ -263,21 +278,16 @@ const updateCharts = () => {
     });
   }
 
-  // Create income chart
-  const incomeCtx = document.getElementById('incomeChart');
-  if (incomeCtx && locations.value.length > 0) {
-    incomeChart = new Chart(incomeCtx, {
+  // Create solo parent chart
+  const soloParentCtx = document.getElementById('soloParentChart');
+  if (soloParentCtx && locations.value.length > 0) {
+    soloParentChart = new Chart(soloParentCtx, {
       type: 'bar',
       data: {
         labels: locations.value.map(loc => loc.name),
         datasets: [{
-          label: 'Average Income',
-          data: locations.value.map(loc => {
-            const income = typeof loc.income === 'string' 
-              ? parseFloat(loc.income.replace(/[^0-9.]/g, '')) 
-              : loc.income;
-            return income || 0;
-          }),
+          label: 'Solo Parent Count',
+          data: locations.value.map(loc => loc.soloParent || 0),
           backgroundColor: '#4e73df',
         }]
       },
@@ -292,9 +302,12 @@ const updateCharts = () => {
         scales: {
           y: {
             beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            },
             title: {
               display: true,
-              text: 'Income (PHP)'
+              text: 'Number of Solo Parents'
             }
           }
         }
@@ -339,17 +352,21 @@ onMounted(() => {
 
   // Start polling
   const intervalId = setInterval(pollData, pollInterval);
+  
+  // Add resize listener for sidebar
+  window.addEventListener('resize', handleResize);
 
   // Cleanup on component unmount
   onUnmounted(() => {
     clearInterval(intervalId);
+    window.removeEventListener('resize', handleResize);
     if (demographicsChart) {
       demographicsChart.destroy();
       demographicsChart = null;
     }
-    if (incomeChart) {
-      incomeChart.destroy();
-      incomeChart = null;
+    if (soloParentChart) {
+      soloParentChart.destroy();
+      soloParentChart = null;
     }
   });
 });
@@ -397,31 +414,64 @@ onMounted(() => {
   border-radius: 15px; /* Added for card-like appearance matching AddNew */
 }
 
+/* ===== MOBILE SIDEBAR AS OVERLAY ===== */
 @media (max-width: 768px) {
   .container-1 {
-    flex-direction: column;
-    padding: 0.5rem;
-    gap: 0.5rem;
+    position: relative;
+    flex-direction: row;
+    padding: 0;
+    gap: 0;
   }
-  .first-column {
-    width: 100%; /* On mobile, when open, it could be full width or a set width */
-    /* position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; for an overlay effect */
-    margin-bottom: 1rem;
+  
+  /* Sidebar as overlay on mobile */
+  .first-column,
+  .first-column.sidebar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 85vw;
+    margin: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.2),
+      0 4px 12px rgba(0, 0, 0, 0.15);
   }
-  .second-column {
-    width: 100%;
+  
+  /* Backdrop overlay */
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeInBackdrop 0.3s ease;
   }
-  .content-shifted {
-    /* No specific shift needed if sidebar stacks above in mobile view */
+  
+  @keyframes fadeInBackdrop {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
-  .content-full {
-    width: 100%;
-  }
-  /* Hide hamburger on mobile if sidebar takes full screen when open, or adjust its position */
+  
   .page-info {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
   }
+  
+  .main-title {
+    font-size: 20px;
+    flex: 1;
+  }
+  
   .admin-setting {
     width: 100%;
     margin-top: 1rem;
@@ -430,6 +480,19 @@ onMounted(() => {
     width: 100%;
     margin-right: 0;
     margin-bottom: 0.5rem;
+  }
+  
+  /* Content takes full width on mobile */
+  .second-column {
+    width: 100% !important;
+    padding: 0.5rem;
+    margin-left: 0 !important;
+  }
+  
+  /* Ensure hamburger is always visible on mobile */
+  .hamburger-button {
+    display: flex !important;
+    margin-right: 0.75rem;
   }
 }
 
@@ -643,7 +706,7 @@ h1 {
   padding-bottom: 11px;
 }
 .p {
-  color: #A0AEC0;
+  color: #383838;
   font-size: 14px;
   padding-bottom: 73px;
 }
@@ -989,21 +1052,33 @@ i.fab {
 
 /* ===== IMPROVED SIDEBAR TRANSITION ===== */
 .slide-fade-enter-active {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth ease-in-out */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 1, 1); /* Slightly faster leave */
+  transition: transform 0.25s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .slide-fade-enter-from {
-  transform: translateX(-300px); /* Slide in from left */
-  opacity: 0;
+  transform: translateX(-100%);
 }
 
 .slide-fade-leave-to {
-  transform: translateX(-300px); /* Slide out to left */
-  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* Desktop: No transform needed */
+@media (min-width: 769px) {
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  
+  /* Hide backdrop on desktop */
+  .sidebar-backdrop {
+    display: none;
+  }
 }
 
 /* Adjust second-column based on sidebar visibility for desktop */

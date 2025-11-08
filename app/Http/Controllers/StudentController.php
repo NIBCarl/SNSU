@@ -100,10 +100,10 @@ class StudentController extends Controller
             'last_name' => 'required|string|max:255',
             'student_id' => 'required|string|regex:/^\d{4}-\d{5}$/|unique:students',
             'course' => 'required|string|max:255',
-            'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year,Others',
-            'gender' => 'required|in:Male,Female,Other',
+            'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year',
+            'gender' => 'required|in:Male,Female',
             'birth_date' => 'required|date',
-            'marital_status' => 'required|in:Single,Married',
+            'marital_status' => 'required|in:Single (Never Married),Married,Widowed,Divorced,Separated',
             'religion' => 'required|string|max:255',
             'cellphone_number' => 'nullable|string|max:20',
             'address' => 'required|string',
@@ -126,7 +126,7 @@ class StudentController extends Controller
             'ethnicity' => 'required|in:Indigenous,Non-Indigenous',
             'pwd' => 'boolean',
             'pwd_id' => 'nullable|string|max:255',
-            'housing_status' => 'required|in:Owned,Renting,Living with Relatives,Other',
+            'housing_status' => 'required|in:Owned,Renting,Living with Relatives',
         ]);
 
         $student = Student::create($validated);
@@ -156,10 +156,10 @@ class StudentController extends Controller
             'last_name' => 'required|string|max:255',
             'student_id' => 'required|string|regex:/^\d{4}-\d{5}$/|unique:students,student_id,' . $student->id,
             'course' => 'required|string|max:255',
-            'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year,Others',
-            'gender' => 'required|in:Male,Female,Other',
+            'year_level' => 'required|in:1st Year,2nd Year,3rd Year,4th Year',
+            'gender' => 'required|in:Male,Female',
             'birth_date' => 'required|date',
-            'marital_status' => 'required|in:Single,Married',
+            'marital_status' => 'required|in:Single (Never Married),Married,Widowed,Divorced,Separated',
             'religion' => 'required|string|max:255',
             'cellphone_number' => 'nullable|string|max:20',
             'address' => 'required|string',
@@ -182,7 +182,7 @@ class StudentController extends Controller
             'ethnicity' => 'required|in:Indigenous,Non-Indigenous',
             'pwd' => 'boolean',
             'pwd_id' => 'nullable|string|max:255',
-            'housing_status' => 'required|in:Owned,Renting,Living with Relatives,Other',
+            'housing_status' => 'required|in:Owned,Renting,Living with Relatives',
         ]);
 
         $student->update($validated);
